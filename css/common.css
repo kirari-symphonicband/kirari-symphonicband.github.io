@@ -1666,3 +1666,193 @@ button {
   }
 
 }
+
+/* ==================================================
+   INSTAGRAM
+================================================== */
+
+.instagram-section {
+  background: var(--gray);
+}
+
+.instagram-intro {
+  margin: -15px auto 35px;
+
+  text-align: center;
+}
+
+.instagram-intro p {
+  margin: 0 0 8px;
+
+  color: var(--text-light);
+
+  font-size: 14px;
+}
+
+.instagram-account {
+  color: var(--navy);
+
+  font-size: 15px;
+  font-weight: 700;
+
+  letter-spacing: .02em;
+
+  transition: opacity .2s ease;
+}
+
+.instagram-account:hover {
+  opacity: .65;
+}
+
+
+/* ====================
+   INSTAGRAM GRID
+==================== */
+
+.instagram-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 15px;
+
+  max-width: 800px;
+
+  margin: 0 auto;
+}
+
+.instagram-item {
+  position: relative;
+
+  display: block;
+
+  aspect-ratio: 1 / 1;
+
+  overflow: hidden;
+
+  background: #e5e8ed;
+
+  border: 1px solid var(--border);
+}
+
+.instagram-item img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  transition:
+    transform .35s ease,
+    opacity .35s ease;
+}
+
+.instagram-item:hover img {
+  transform: scale(1.04);
+
+  opacity: .85;
+}
+
+
+/* ====================
+   INSTAGRAM MORE
+==================== */
+
+.instagram-more {
+  margin-top: 35px;
+
+  text-align: center;
+}
+
+.instagram-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 20px;
+
+  min-width: 220px;
+
+  padding: 12px 22px;
+
+  border: 1px solid var(--navy);
+
+  border-radius: 4px;
+
+  color: var(--navy);
+
+  font-size: 14px;
+  font-weight: 700;
+
+  transition:
+    background .25s ease,
+    color .25s ease;
+}
+
+.instagram-button span {
+  font-size: 24px;
+
+  line-height: 1;
+}
+
+.instagram-button:hover {
+  background: var(--navy);
+
+  color: var(--white);
+}
+
+
+/* ==================================================
+   INSTAGRAM MOBILE
+================================================== */
+
+.instagram-mobile-br {
+  display: none;
+}
+
+
+@media (max-width: 700px) {
+
+  .instagram-intro {
+    margin-top: -10px;
+
+    margin-bottom: 25px;
+  }
+
+  .instagram-intro p {
+    font-size: 13px;
+
+    line-height: 1.8;
+  }
+
+  .instagram-mobile-br {
+    display: block;
+  }
+
+  .instagram-account {
+    font-size: 13px;
+  }
+
+  .instagram-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+
+    gap: 8px;
+  }
+
+  .instagram-more {
+    margin-top: 25px;
+  }
+
+  .instagram-button {
+    min-width: 200px;
+
+    padding: 11px 18px;
+
+    font-size: 13px;
+  }
+
+}

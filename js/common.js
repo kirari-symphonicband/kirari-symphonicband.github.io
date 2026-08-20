@@ -535,3 +535,23 @@ function resetSlideshowTimer() {
 // ==================================================
 
 initializeSlideshow();
+
+
+// ==================================================
+// Instagram
+// 画像が存在しない場合、その投稿枠を自動的に非表示にする
+// ==================================================
+
+document.querySelectorAll(".instagram-item img").forEach((img) => {
+
+  img.addEventListener("error", () => {
+
+    const item = img.closest(".instagram-item");
+
+    if (item) {
+      item.remove();
+    }
+
+  });
+
+});
