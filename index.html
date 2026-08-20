@@ -124,76 +124,16 @@
         </div>
 
 
-        <div class="news-list">
+        <!-- NEWS LIST -->
 
-          <a href="#" class="news-item">
-
-            <time datetime="2026-08-17">
-              2026.08.17
-            </time>
-
-            <span class="news-category">
-              お知らせ
-            </span>
-
-            <span class="news-title">
-              第○回定期演奏会のお知らせ
-            </span>
-
-            <span class="news-arrow">
-              ›
-            </span>
-
-          </a>
-
-
-          <a href="#" class="news-item">
-
-            <time datetime="2026-08-10">
-              2026.08.10
-            </time>
-
-            <span class="news-category">
-              お知らせ
-            </span>
-
-            <span class="news-title">
-              ○○イベントに出演します
-            </span>
-
-            <span class="news-arrow">
-              ›
-            </span>
-
-          </a>
-
-
-          <a href="#" class="news-item">
-
-            <time datetime="2026-07-30">
-              2026.07.30
-            </time>
-
-            <span class="news-category">
-              お知らせ
-            </span>
-
-            <span class="news-title">
-              練習見学会のお知らせ
-            </span>
-
-            <span class="news-arrow">
-              ›
-            </span>
-
-          </a>
-
+        <div id="news-list" class="news-list">
+          <!-- /news/ 内のファイルをJavaScriptで読み込みます -->
         </div>
 
 
         <div class="more-link-wrapper">
 
-          <a href="#" class="more-link">
+          <a href="news/index.html" class="more-link">
 
             一覧を見る
 
@@ -202,6 +142,59 @@
             </span>
 
           </a>
+
+        </div>
+
+
+        <!-- SLIDESHOW -->
+
+        <div class="slideshow" id="slideshow">
+
+          <div class="slideshow-container">
+
+            <button
+              type="button"
+              class="slideshow-button slideshow-prev"
+              aria-label="前の写真"
+            >
+              ‹
+            </button>
+
+
+            <div class="slideshow-image-wrapper">
+
+              <img
+                id="slideshow-image"
+                src=""
+                alt="Kirariシンフォニックバンドひろしまの活動写真"
+              >
+
+              <div
+                id="slideshow-placeholder"
+                class="slideshow-placeholder"
+              >
+                PHOTO
+              </div>
+
+            </div>
+
+
+            <button
+              type="button"
+              class="slideshow-button slideshow-next"
+              aria-label="次の写真"
+            >
+              ›
+            </button>
+
+          </div>
+
+
+          <div
+            class="slideshow-dots"
+            id="slideshow-dots"
+            aria-label="スライド選択"
+          ></div>
 
         </div>
 
