@@ -187,11 +187,11 @@ const slideshowDots =
 
 // 使用する可能性のある画像
 const slideshowImagePaths = [
-  "images/slideshow/photo1.png",
-  "images/slideshow/photo2.png",
-  "images/slideshow/photo3.png",
-  "images/slideshow/photo4.png",
-  "images/slideshow/photo5.png"
+  "images/slideshow/photo1.jpeg",
+  "images/slideshow/photo2.jpeg",
+  "images/slideshow/photo3.jpeg",
+  "images/slideshow/photo4.jpeg",
+  "images/slideshow/photo5.jpeg"
 ];
 
 
