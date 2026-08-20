@@ -12,6 +12,41 @@ PAGE
 }
 
 /* ==================================================
+   ACTIVITY PAGE HEADER
+   ================================================== */
+
+.activity-page .site-header {
+    position: relative;
+    background: var(--navy);
+    color: var(--white);
+}
+
+.activity-page .header-inner {
+    min-height: 80px;
+}
+
+.activity-page .site-name img {
+    width: 150px;
+}
+
+@media (max-width: 700px) {
+
+    .activity-page .header-inner {
+        min-height: 65px;
+    }
+
+    .activity-page .site-name {
+        width: 90px;
+        max-width: 90px;
+    }
+
+    .activity-page .site-name img {
+        width: 90px;
+    }
+
+}
+
+/* ==================================================
 ACTIVITY RECORDS
 ================================================== */
 
@@ -132,6 +167,10 @@ MOBILE
 ================================================== */
 
 @media (max-width: 700px) {
+
+    .activity-page .global-nav {
+        top: 65px;
+    }
 
     .activity-records {
         width: 100%;
