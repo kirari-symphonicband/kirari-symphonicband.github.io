@@ -3,7 +3,6 @@
 // /news/ 内のHTMLファイルを読み込んで表示
 // ==================================================
 
-
 const newsList =
   document.querySelector("#news-all-list");
 
@@ -36,7 +35,8 @@ async function loadAllNews() {
 
       newsFiles.map(async (file) => {
 
-        const response = await fetch(file);
+        const response =
+          await fetch(file);
 
 
         if (!response.ok) {
@@ -63,7 +63,9 @@ async function loadAllNews() {
 
 
     newsList.innerHTML =
+
       newsItems
+
         .map(item => {
 
           const parser =
@@ -91,17 +93,16 @@ async function loadAllNews() {
           const date =
             article.dataset.date || "";
 
-
           const category =
             article.dataset.category || "";
-
 
           const title =
             article.dataset.title || "";
 
 
+          // news/index.html からなので
+          // ファイル名だけでOK
           const url =
-            article.dataset.url ||
             item.file;
 
 
@@ -109,7 +110,7 @@ async function loadAllNews() {
 
             <a
               href="${url}"
-              class="news-item"
+              class="news-page-item"
             >
 
               <time
@@ -118,15 +119,15 @@ async function loadAllNews() {
                 ${date}
               </time>
 
-              <span class="news-category">
+              <span class="news-page-category">
                 ${category}
               </span>
 
-              <span class="news-title">
+              <span class="news-page-title">
                 ${title}
               </span>
 
-              <span class="news-arrow">
+              <span class="news-page-arrow">
                 ›
               </span>
 
@@ -135,13 +136,13 @@ async function loadAllNews() {
           `;
 
         })
+
         .join("");
 
 
   } catch (error) {
 
     console.error(error);
-
 
     newsList.innerHTML = `
 

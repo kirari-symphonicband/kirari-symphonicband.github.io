@@ -28,12 +28,10 @@ if (menuButton && globalNav) {
 
 const newsList = document.querySelector("#news-list");
 
-
 // 新しい順にファイル名を記載
 const newsFiles = [
   "2026-08-20.html"
 ];
-
 
 async function loadNews() {
 
@@ -41,15 +39,10 @@ async function loadNews() {
     return;
   }
 
-
   if (newsFiles.length === 0) {
-
     newsList.innerHTML = "";
-
     return;
-
   }
-
 
   try {
 
@@ -82,18 +75,22 @@ async function loadNews() {
 
 
     newsList.innerHTML = newsItems
+
       .map(item => {
 
         const parser = new DOMParser();
 
-        const document = parser.parseFromString(
-          item.html,
-          "text/html"
-        );
+        const document =
+          parser.parseFromString(
+            item.html,
+            "text/html"
+          );
 
 
         const article =
-          document.querySelector(".news-data");
+          document.querySelector(
+            ".news-data"
+          );
 
 
         if (!article) {
@@ -110,15 +107,22 @@ async function loadNews() {
         const title =
           article.dataset.title || "";
 
+
+        // TOPページからなので必ず news/ を付ける
         const url =
-          article.dataset.url || `news/${item.file}`;
+          `news/${item.file}`;
 
 
         return `
 
-          <a href="${url}" class="news-item">
+          <a
+            href="${url}"
+            class="news-item"
+          >
 
-            <time datetime="${date.replace(/\./g, "-")}">
+            <time
+              datetime="${date.replace(/\./g, "-")}"
+            >
               ${date}
             </time>
 
@@ -139,6 +143,7 @@ async function loadNews() {
         `;
 
       })
+
       .join("");
 
 
@@ -147,15 +152,16 @@ async function loadNews() {
     console.error(error);
 
     newsList.innerHTML = `
+
       <p class="news-error">
         お知らせを読み込めませんでした。
       </p>
+
     `;
 
   }
 
 }
-
 
 loadNews();
 
