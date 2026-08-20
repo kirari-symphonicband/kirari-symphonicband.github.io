@@ -185,9 +185,6 @@ const slideshowPrev =
 const slideshowNext =
   document.querySelector(".slideshow-next");
 
-const slideshowDots =
-  document.querySelector("#slideshow-dots");
-
 
 // 使用する可能性のある画像
 const slideshowImagePaths = [
@@ -285,9 +282,6 @@ async function initializeSlideshow() {
       slideshowNext.disabled = true;
     }
 
-    if (slideshowDots) {
-      slideshowDots.innerHTML = "";
-    }
 
     return;
 
@@ -300,14 +294,22 @@ async function initializeSlideshow() {
   slideshowImage.style.display = "block";
 
 
-  createSlideshowDots();
-
   showSlide(0);
 
 
   // 写真が2枚以上ある場合のみ
   // 自動スライドと左右ボタンを有効化
+
   if (slideshowImages.length > 1) {
+
+    if (slideshowPrev) {
+      slideshowPrev.disabled = false;
+    }
+
+    if (slideshowNext) {
+      slideshowNext.disabled = false;
+    }
+
 
     startSlideshowTimer();
 
@@ -359,93 +361,8 @@ function showSlide(index) {
   slideshowImage.src =
     slideshowImages[currentSlide];
 
-
-  updateSlideshowDots();
-
 }
 
-
-// ==================================================
-// ドット生成
-// ==================================================
-
-function createSlideshowDots() {
-
-  if (!slideshowDots) {
-    return;
-  }
-
-
-  slideshowDots.innerHTML = "";
-
-
-  slideshowImages.forEach((src, index) => {
-
-    const dot =
-      document.createElement("button");
-
-
-    dot.type = "button";
-
-    dot.className = "slideshow-dot";
-
-    dot.dataset.slide = String(index);
-
-    dot.setAttribute(
-      "aria-label",
-      `${index + 1}枚目`
-    );
-
-
-    dot.addEventListener(
-      "click",
-      () => {
-
-        showSlide(index);
-
-        resetSlideshowTimer();
-
-      }
-    );
-
-
-    slideshowDots.appendChild(dot);
-
-  });
-
-
-  updateSlideshowDots();
-
-}
-
-
-// ==================================================
-// ドット状態更新
-// ==================================================
-
-function updateSlideshowDots() {
-
-  if (!slideshowDots) {
-    return;
-  }
-
-
-  const dots =
-    slideshowDots.querySelectorAll(
-      ".slideshow-dot"
-    );
-
-
-  dots.forEach((dot, index) => {
-
-    dot.classList.toggle(
-      "is-active",
-      index === currentSlide
-    );
-
-  });
-
-}
 
 
 // ==================================================

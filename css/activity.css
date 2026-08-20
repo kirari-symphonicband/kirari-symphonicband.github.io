@@ -1,0 +1,171 @@
+/* ==================================================
+Kirariシンフォニックバンドひろしま
+Activity Page CSS
+================================================== */
+
+/* ==================================================
+PAGE
+================================================== */
+
+.activity-page {
+    background: var(--white);
+}
+
+/* ==================================================
+ACTIVITY RECORDS
+================================================== */
+
+.activity-records {
+    max-width: 900px;
+
+    margin: 0 auto;
+}
+
+/* ==================================================
+YEAR
+================================================== */
+
+.activity-year {
+    margin-bottom: 65px;
+}
+
+.activity-year:last-child {
+    margin-bottom: 0;
+}
+
+.activity-year h2 {
+    margin: 0 0 20px;
+
+    padding-bottom: 12px;
+
+    border-bottom: 2px solid var(--navy);
+
+    color: var(--navy);
+
+    font-size: 27px;
+    font-weight: 800;
+
+    letter-spacing: .05em;
+}
+
+/* ==================================================
+RECORD LIST
+================================================== */
+
+.activity-record-list {
+    border-top: 1px solid var(--border);
+}
+
+/* ==================================================
+RECORD ITEM
+================================================== */
+
+.activity-record-item {
+    display: grid;
+
+    grid-template-columns: 120px 1fr;
+
+    align-items: center;
+
+    gap: 25px;
+
+    min-height: 65px;
+
+    padding: 15px 10px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+/* DATE */
+
+.activity-record-item time {
+    color: var(--text-light);
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* TITLE */
+
+.activity-record-item span {
+    color: var(--text);
+
+    font-size: 15px;
+    font-weight: 500;
+}
+
+/* ==================================================
+BACK BUTTON
+================================================== */
+
+.activity-page-back {
+    margin-top: 70px;
+
+    text-align: center;
+}
+
+.activity-page-back a {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding-bottom: 5px;
+
+    border-bottom: 1px solid var(--navy);
+
+    color: var(--navy);
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.activity-page-back a span {
+    font-size: 24px;
+
+    line-height: 1;
+}
+
+/* ==================================================
+MOBILE
+================================================== */
+
+@media (max-width: 700px) {
+
+    .activity-records {
+        width: 100%;
+    }
+
+    .activity-year {
+        margin-bottom: 50px;
+    }
+
+    .activity-year h2 {
+        margin-bottom: 15px;
+        font-size: 23px;
+
+    }
+
+    .activity-record-item {
+        grid-template-columns: 82px 1fr;
+        gap: 12px;
+        min-height: 60px;
+        padding: 13px 5px;
+
+    }
+
+    .activity-record-item time {
+        font-size: 12px;
+    }
+
+    .activity-record-item span {
+        font-size: 13px;
+        line-height: 1.7;
+    }
+
+    .activity-page-back {
+        margin-top: 50px;
+    }
+
+}
