@@ -31,9 +31,7 @@ const newsList = document.querySelector("#news-list");
 
 // 新しい順にファイル名を記載
 const newsFiles = [
-  "2026-08-17.html",
-  "2026-08-10.html",
-  "2026-07-30.html"
+  "2026-08-20.html"
 ];
 
 
