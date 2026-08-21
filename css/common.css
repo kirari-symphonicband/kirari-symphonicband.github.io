@@ -706,7 +706,7 @@ button {
 
   color: var(--gold);
 
-  font-size: 42px;
+  font-size: 30px;
 
   line-height: 1;
 }
@@ -1465,7 +1465,7 @@ button {
   }
 
   .concert-date strong {
-    font-size: 34px;
+    font-size: 25px;
   }
 
   .concert-content {
