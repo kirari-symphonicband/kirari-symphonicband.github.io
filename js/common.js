@@ -52,16 +52,22 @@ const newsFiles = [
   "2026-08-20.html"
 ];
 
+
 async function loadNews() {
 
   if (!newsList) {
     return;
   }
 
+
   if (newsFiles.length === 0) {
+
     newsList.innerHTML = "";
+
     return;
+
   }
+
 
   try {
 
@@ -73,6 +79,7 @@ async function loadNews() {
           `news/${file}`
         );
 
+
         if (!response.ok) {
 
           throw new Error(
@@ -81,7 +88,9 @@ async function loadNews() {
 
         }
 
+
         const html = await response.text();
+
 
         return {
           file: file,
@@ -127,7 +136,7 @@ async function loadNews() {
           article.dataset.title || "";
 
 
-        // TOPページからなので必ず news/ を付ける
+        // TOPページからなので news/ を付ける
         const url =
           `news/${item.file}`;
 
@@ -182,6 +191,7 @@ async function loadNews() {
 
 }
 
+
 loadNews();
 
 
@@ -205,7 +215,7 @@ const slideshowNext =
   document.querySelector(".slideshow-next");
 
 
-// 使用する可能性のある画像
+// 使用する画像
 const slideshowImagePaths = [
   "images/slideshow/photo1.jpeg",
   "images/slideshow/photo2.jpeg",
@@ -293,9 +303,11 @@ async function initializeSlideshow() {
 
     slideshowPlaceholder.style.display = "flex";
 
+
     if (slideshowPrev) {
       slideshowPrev.disabled = true;
     }
+
 
     if (slideshowNext) {
       slideshowNext.disabled = true;
@@ -313,17 +325,21 @@ async function initializeSlideshow() {
   slideshowImage.style.display = "block";
 
 
-  showSlide(0);
+  // 最初の写真を表示
+  slideshowImage.src = slideshowImages[0];
+
+  slideshowImage.classList.remove(
+    "is-changing"
+  );
 
 
-  // 写真が2枚以上ある場合のみ
-  // 自動スライドと左右ボタンを有効化
-
+  // 写真が2枚以上ある場合
   if (slideshowImages.length > 1) {
 
     if (slideshowPrev) {
       slideshowPrev.disabled = false;
     }
+
 
     if (slideshowNext) {
       slideshowNext.disabled = false;
@@ -338,6 +354,7 @@ async function initializeSlideshow() {
       slideshowPrev.disabled = true;
     }
 
+
     if (slideshowNext) {
       slideshowNext.disabled = true;
     }
@@ -349,6 +366,7 @@ async function initializeSlideshow() {
 
 // ==================================================
 // スライド表示
+// フェード＋少しズーム
 // ==================================================
 
 function showSlide(index) {
@@ -377,11 +395,31 @@ function showSlide(index) {
   }
 
 
-  slideshowImage.src =
-    slideshowImages[currentSlide];
+  // フェードアウト開始
+  slideshowImage.classList.add(
+    "is-changing"
+  );
+
+
+  // フェードアウトしてから写真を変更
+  setTimeout(() => {
+
+    slideshowImage.src =
+      slideshowImages[currentSlide];
+
+
+    // 新しい画像の読み込み完了後にフェードイン
+    slideshowImage.onload = () => {
+
+      slideshowImage.classList.remove(
+        "is-changing"
+      );
+
+    };
+
+  }, 300);
 
 }
-
 
 
 // ==================================================
@@ -397,6 +435,7 @@ if (slideshowPrev) {
       if (slideshowImages.length <= 1) {
         return;
       }
+
 
       showSlide(currentSlide - 1);
 
@@ -421,6 +460,7 @@ if (slideshowNext) {
       if (slideshowImages.length <= 1) {
         return;
       }
+
 
       showSlide(currentSlide + 1);
 
@@ -482,16 +522,20 @@ initializeSlideshow();
 // 画像が存在しない場合、その投稿枠を自動的に非表示にする
 // ==================================================
 
-document.querySelectorAll(".instagram-item img").forEach((img) => {
+document
+  .querySelectorAll(".instagram-item img")
+  .forEach((img) => {
 
-  img.addEventListener("error", () => {
+    img.addEventListener("error", () => {
 
-    const item = img.closest(".instagram-item");
+      const item =
+        img.closest(".instagram-item");
 
-    if (item) {
-      item.remove();
-    }
+
+      if (item) {
+        item.remove();
+      }
+
+    });
 
   });
-
-});
