@@ -71,8 +71,7 @@ button {
 }
 
 .container {
-  width: min(calc(100% - 80px),
-      var(--max-width));
+  width: min(calc(100% - 80px), var(--max-width));
 
   margin: 0 auto;
 }
@@ -231,10 +230,12 @@ button {
   color: var(--white);
 
   background:
-    radial-gradient(circle at 50% 40%,
+    radial-gradient(
+      circle at 50% 40%,
       #0c3268 0%,
       var(--navy) 60%,
-      #03142f 100%);
+      #03142f 100%
+    );
 }
 
 .hero::after {
@@ -252,8 +253,7 @@ button {
 }
 
 .hero-inner {
-  width: min(calc(100% - 40px),
-      900px);
+  width: min(calc(100% - 40px), 900px);
 
   margin: 55px auto 0;
 
@@ -580,9 +580,11 @@ button {
   overflow: hidden;
 
   background:
-    linear-gradient(135deg,
+    linear-gradient(
+      135deg,
       #d9dee7,
-      #b9c2cf);
+      #b9c2cf
+    );
 
   color: #667085;
 
@@ -641,7 +643,7 @@ button {
   letter-spacing: .05em;
 }
 
-.conductor-content>p:last-child {
+.conductor-content > p:last-child {
   margin: 0;
 
   color: var(--text-light);
@@ -651,7 +653,7 @@ button {
   line-height: 2;
 }
 
-.conductor-content>p:last-child strong {
+.conductor-content > p:last-child strong {
   color: var(--navy);
 
   font-weight: 700;
@@ -819,9 +821,11 @@ button {
   justify-content: center;
 
   background:
-    linear-gradient(135deg,
+    linear-gradient(
+      135deg,
       #d9dee7,
-      #b9c2cf);
+      #b9c2cf
+    );
 
   color: #667085;
 
@@ -912,7 +916,7 @@ button {
   background: var(--white);
 }
 
-.member-box>h3 {
+.member-box > h3 {
   margin: 0;
 
   padding: 18px 25px;
@@ -967,9 +971,11 @@ button {
   padding: 40px 30px;
 
   background:
-    linear-gradient(135deg,
+    linear-gradient(
+      135deg,
       var(--navy),
-      var(--navy-light));
+      var(--navy-light)
+    );
 
   color: var(--white);
 
@@ -993,7 +999,7 @@ button {
   font-size: 25px;
 }
 
-.member-visit>p:not(.member-visit-label) {
+.member-visit > p:not(.member-visit-label) {
   margin: 0 0 25px;
 
   color: rgba(255, 255, 255, .8);
@@ -1048,9 +1054,11 @@ button {
   padding: 50px 0;
 
   background:
-    linear-gradient(135deg,
+    linear-gradient(
+      135deg,
       var(--navy),
-      var(--navy-light));
+      var(--navy-light)
+    );
 
   color: var(--white);
 
@@ -1067,7 +1075,7 @@ button {
   font-size: 36px;
 }
 
-.contact-inner>p {
+.contact-inner > p {
   margin: 0 0 22px;
 
   color: rgba(255, 255, 255, .8);
@@ -1177,8 +1185,7 @@ button {
 @media (max-width: 900px) {
 
   .container {
-    width: min(calc(100% - 50px),
-        var(--max-width));
+    width: min(calc(100% - 50px), var(--max-width));
   }
 
   .global-nav {
@@ -1215,18 +1222,23 @@ button {
     min-height: 65px;
   }
 
+  /*
+    スマホヘッダーのロゴ
+    90px → 150pxに変更
+  */
+
   .site-name {
     display: block;
 
-    width: 90px;
+    width: 150px;
 
-    max-width: 90px;
+    max-width: 150px;
   }
 
   .site-name img {
     display: block;
 
-    width: 90px;
+    width: 150px;
 
     height: auto;
   }
@@ -1270,18 +1282,28 @@ button {
   }
 
 
+  /*
+    TOPページはロゴがないため
+    ☰を右端に配置
+  */
+
+  .top-header .header-inner {
+    justify-content: flex-end;
+  }
+
+
   /* ====================
      HERO
   ==================== */
 
   .hero {
-    min-height: 390px;
+    min-height: 330px;
   }
 
   .hero-inner {
     width: calc(100% - 32px);
 
-    margin-top: 30px;
+    margin-top: 0px;
   }
 
   .hero-kicker {
@@ -1293,7 +1315,7 @@ button {
   }
 
   .hero-logo {
-    width: min(74vw, 390px);
+    width: min(74vw, 280px);
 
     margin-bottom: 14px;
   }
@@ -1445,7 +1467,7 @@ button {
     font-size: 13px;
   }
 
-  .conductor-content>p:last-child {
+  .conductor-content > p:last-child {
     font-size: 13px;
 
     line-height: 1.9;
@@ -1532,7 +1554,7 @@ button {
     line-height: 1.7;
   }
 
-  .member-box>h3 {
+  .member-box > h3 {
     padding: 15px 18px;
 
     font-size: 17px;
@@ -1546,7 +1568,7 @@ button {
     font-size: 23px;
   }
 
-  .member-visit>p:not(.member-visit-label) {
+  .member-visit > p:not(.member-visit-label) {
     font-size: 13px;
   }
 
@@ -1573,7 +1595,7 @@ button {
     font-size: 28px;
   }
 
-  .contact-inner>p {
+  .contact-inner > p {
     margin-bottom: 20px;
 
     font-size: 13px;
@@ -1600,6 +1622,92 @@ button {
     gap: 15px 20px;
   }
 
+
+  /* ====================
+     INSTAGRAM
+  ==================== */
+
+  .instagram-intro {
+    margin-top: -10px;
+
+    margin-bottom: 25px;
+  }
+
+  .instagram-intro p {
+    font-size: 13px;
+
+    line-height: 1.8;
+  }
+
+  .instagram-mobile-br {
+    display: block;
+  }
+
+  .instagram-account {
+    font-size: 13px;
+  }
+
+  .instagram-grid {
+    grid-template-columns:
+      repeat(2, 1fr);
+
+    gap: 8px;
+  }
+
+  .instagram-more {
+    margin-top: 25px;
+  }
+
+  .instagram-button {
+    min-width: 200px;
+
+    padding: 11px 18px;
+
+    font-size: 13px;
+  }
+
+
+  /* ====================
+     SLIDESHOW
+  ==================== */
+
+  .slideshow {
+    margin-bottom: 70px;
+  }
+
+  .slideshow-button {
+    width: 24px;
+    height: 24px;
+
+    border-color: rgba(255, 255, 255, .55);
+
+    background: rgba(6, 29, 65, .38);
+
+    opacity: .78;
+  }
+
+  .slideshow-button::before {
+    width: 6px;
+    height: 6px;
+
+    border-width: 1.3px;
+  }
+
+  .slideshow-prev {
+    left: 7px;
+  }
+
+  .slideshow-next {
+    right: 7px;
+  }
+
+  .slideshow-button:active {
+    background: rgba(6, 29, 65, .72);
+
+    transform:
+      translateY(-50%) scale(.94);
+  }
+
 }
 
 
@@ -1609,14 +1717,24 @@ button {
 
 @media (max-width: 400px) {
 
-  .site-name {
-    width: 82px;
+  /*
+    ロゴは150pxを維持
+  */
 
-    max-width: 82px;
+  .site-name {
+    display: block;
+
+    width: 150px;
+
+    max-width: 150px;
   }
 
   .site-name img {
-    width: 82px;
+    display: block;
+
+    width: 150px;
+
+    height: auto;
   }
 
   .hero {
@@ -1644,6 +1762,30 @@ button {
 
   .news-category {
     font-size: 9px;
+  }
+
+
+  /* ====================
+     SMALL MOBILE
+     SLIDESHOW
+  ==================== */
+
+  .slideshow-button {
+    width: 22px;
+    height: 22px;
+  }
+
+  .slideshow-button::before {
+    width: 5px;
+    height: 5px;
+  }
+
+  .slideshow-prev {
+    left: 6px;
+  }
+
+  .slideshow-next {
+    right: 6px;
   }
 
 }
@@ -1685,6 +1827,10 @@ button {
 
 .instagram-account:hover {
   opacity: .65;
+}
+
+.instagram-mobile-br {
+  display: none;
 }
 
 
@@ -1786,58 +1932,6 @@ button {
   background: var(--navy);
 
   color: var(--white);
-}
-
-
-/* ==================================================
-   INSTAGRAM MOBILE
-================================================== */
-
-.instagram-mobile-br {
-  display: none;
-}
-
-@media (max-width: 700px) {
-
-  .instagram-intro {
-    margin-top: -10px;
-
-    margin-bottom: 25px;
-  }
-
-  .instagram-intro p {
-    font-size: 13px;
-
-    line-height: 1.8;
-  }
-
-  .instagram-mobile-br {
-    display: block;
-  }
-
-  .instagram-account {
-    font-size: 13px;
-  }
-
-  .instagram-grid {
-    grid-template-columns:
-      repeat(2, 1fr);
-
-    gap: 8px;
-  }
-
-  .instagram-more {
-    margin-top: 25px;
-  }
-
-  .instagram-button {
-    min-width: 200px;
-
-    padding: 11px 18px;
-
-    font-size: 13px;
-  }
-
 }
 
 
@@ -1946,9 +2040,11 @@ button {
   justify-content: center;
 
   background:
-    linear-gradient(135deg,
+    linear-gradient(
+      135deg,
       #d9dee7,
-      #b9c2cf);
+      #b9c2cf
+    );
 
   color: #667085;
 
@@ -1963,14 +2059,6 @@ button {
 /* ==================================================
    SLIDESHOW BUTTON
 ================================================== */
-
-/*
-  ポイント
-  - 丸を小さめに
-  - 矢印は文字ではなくCSSで描画
-  - transformの影響を矢印に与えない
-  - positionで完全に中央配置
-*/
 
 .slideshow-button {
   position: absolute;
@@ -2039,8 +2127,7 @@ button {
 
 .slideshow-prev::before {
   transform:
-    translate(-35%, -50%)
-    rotate(-135deg);
+    translate(-35%, -50%) rotate(-135deg);
 }
 
 
@@ -2048,8 +2135,7 @@ button {
 
 .slideshow-next::before {
   transform:
-    translate(-65%, -50%)
-    rotate(45deg);
+    translate(-65%, -50%) rotate(45deg);
 }
 
 
@@ -2078,8 +2164,7 @@ button {
   opacity: 1;
 
   transform:
-    translateY(-50%)
-    scale(1.08);
+    translateY(-50%) scale(1.08);
 }
 
 
@@ -2118,126 +2203,39 @@ button {
 
 
 /* ==================================================
-   MOBILE SLIDESHOW
+   TOP HEADER
 ================================================== */
 
-@media (max-width: 700px) {
+/*
+  TOPページはヘッダーのロゴを表示しない
+*/
 
-  .slideshow {
-    margin-bottom: 70px;
-  }
-
-
-  /* スマホではさらに小さく */
-
-  .slideshow-button {
-    width: 24px;
-    height: 24px;
-
-    border-color: rgba(255, 255, 255, .55);
-
-    background: rgba(6, 29, 65, .38);
-
-    opacity: .78;
-  }
+.top-header .site-name {
+  display: none;
+}
 
 
-  /* スマホの矢印 */
+/*
+  PC版TOPはナビゲーションを中央配置
+*/
 
-  .slideshow-button::before {
-    width: 6px;
-    height: 6px;
+@media (min-width: 701px) {
 
-    border-width: 1.3px;
-  }
-
-
-  /* 写真端から少しだけ離す */
-
-  .slideshow-prev {
-    left: 7px;
-  }
-
-  .slideshow-next {
-    right: 7px;
-  }
-
-
-  /* タップ時 */
-
-  .slideshow-button:active {
-    background: rgba(6, 29, 65, .72);
-
-    transform:
-      translateY(-50%)
-      scale(.94);
+  .top-header .header-inner {
+    justify-content: center;
   }
 
 }
 
 
-/* ==================================================
-   SMALL MOBILE
-================================================== */
+/*
+  スマホ版TOPは☰を右端に配置
+*/
 
-@media (max-width: 400px) {
+@media (max-width: 700px) {
 
-  .site-name {
-    width: 82px;
-
-    max-width: 82px;
-  }
-
-  .site-name img {
-    width: 82px;
-  }
-
-  .hero {
-    min-height: 440px;
-  }
-
-  .hero-logo {
-    width: 78vw;
-  }
-
-  .hero-copy {
-    font-size: 12px;
-  }
-
-  .news-item {
-    grid-template-columns:
-      82px 65px 1fr 15px;
-
-    gap: 5px;
-  }
-
-  .news-title {
-    font-size: 11px;
-  }
-
-  .news-category {
-    font-size: 9px;
-  }
-
-
-  /* 極小画面ではさらに控えめ */
-
-  .slideshow-button {
-    width: 22px;
-    height: 22px;
-  }
-
-  .slideshow-button::before {
-    width: 5px;
-    height: 5px;
-  }
-
-  .slideshow-prev {
-    left: 6px;
-  }
-
-  .slideshow-next {
-    right: 6px;
+  .top-header .header-inner {
+    justify-content: flex-end;
   }
 
 }
