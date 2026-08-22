@@ -3,10 +3,10 @@
 // /news/ 内のHTMLファイルを読み込んで表示
 // ==================================================
 
-const newsList = document.querySelector("#news-all-list");
+const newsList =
+  document.querySelector("#news-all-list");
 
 
-// 新しい順にファイル名を記載
 const newsFiles = [
   "2026-08-20.html"
 ];
@@ -15,12 +15,13 @@ const newsFiles = [
 async function loadAllNews() {
 
   if (!newsList) {
-    return;
-  }
 
-  if (newsFiles.length === 0) {
-    newsList.innerHTML = "";
+    console.error(
+      "#news-all-list が見つかりません。"
+    );
+
     return;
+
   }
 
 
@@ -30,17 +31,35 @@ async function loadAllNews() {
 
       newsFiles.map(async (file) => {
 
-        const response = await fetch(
-          `./${file}`
+        const url =
+          new URL(
+            file,
+            window.location.href
+          ).href;
+
+
+        console.log(
+          "ニュース読み込み:",
+          url
         );
 
+
+        const response =
+          await fetch(url);
+
+
         if (!response.ok) {
+
           throw new Error(
-            `ニュースを読み込めませんでした: ${file}`
+            `HTTP ${response.status}: ${url}`
           );
+
         }
 
-        const html = await response.text();
+
+        const html =
+          await response.text();
+
 
         return {
           file: file,
@@ -52,78 +71,94 @@ async function loadAllNews() {
     );
 
 
-    newsList.innerHTML = newsItems
+    newsList.innerHTML =
 
-      .map(item => {
+      newsItems
 
-        const parser = new DOMParser();
+        .map(item => {
 
-        const document = parser.parseFromString(
-          item.html,
-          "text/html"
-        );
+          const parser =
+            new DOMParser();
 
 
-        const article = document.querySelector(
-          ".news-data"
-        );
+          const document =
+            parser.parseFromString(
+              item.html,
+              "text/html"
+            );
 
 
-        if (!article) {
-          return "";
-        }
+          const article =
+            document.querySelector(
+              ".news-data"
+            );
 
 
-        const date =
-          article.dataset.date || "";
+          if (!article) {
 
-        const category =
-          article.dataset.category || "";
+            console.error(
+              `${item.file} に .news-data がありません。`
+            );
 
-        const title =
-          article.dataset.title || "";
+            return "";
 
-        const url =
-          article.dataset.url || item.file;
+          }
 
 
-        return `
+          const date =
+            article.dataset.date || "";
 
-          <a
-            href="./${url}"
-            class="news-page-item"
-          >
+          const category =
+            article.dataset.category || "";
 
-            <time
-              datetime="${date.replace(/\./g, "-")}"
+          const title =
+            article.dataset.title || "";
+
+          const url =
+            article.dataset.url || item.file;
+
+
+          return `
+
+            <a
+              href="./${url}"
+              class="news-page-item"
             >
-              ${date}
-            </time>
 
-            <span class="news-page-category">
-              ${category}
-            </span>
+              <time
+                datetime="${date.replace(/\./g, "-")}"
+              >
+                ${date}
+              </time>
 
-            <span class="news-page-title">
-              ${title}
-            </span>
+              <span class="news-page-category">
+                ${category}
+              </span>
 
-            <span class="news-page-arrow">
-              ›
-            </span>
+              <span class="news-page-title">
+                ${title}
+              </span>
 
-          </a>
+              <span class="news-page-arrow">
+                ›
+              </span>
 
-        `;
+            </a>
 
-      })
+          `;
 
-      .join("");
+        })
+
+        .join("");
 
 
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      "NEWS読み込みエラー:",
+      error
+    );
+
 
     newsList.innerHTML = `
 
