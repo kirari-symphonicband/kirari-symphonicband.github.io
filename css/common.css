@@ -1149,6 +1149,7 @@ button {
 
 .footer-nav a {
   font-size: 12px;
+
   font-weight: 700;
 
   letter-spacing: .08em;
@@ -1238,6 +1239,7 @@ button {
     position: absolute;
 
     top: 65px;
+
     left: 0;
 
     width: 100%;
@@ -1646,6 +1648,7 @@ button {
 
 }
 
+
 /* ==================================================
    INSTAGRAM
 ================================================== */
@@ -1672,6 +1675,7 @@ button {
   color: var(--navy);
 
   font-size: 15px;
+
   font-weight: 700;
 
   letter-spacing: .02em;
@@ -1764,6 +1768,7 @@ button {
   color: var(--navy);
 
   font-size: 14px;
+
   font-weight: 700;
 
   transition:
@@ -1791,7 +1796,6 @@ button {
 .instagram-mobile-br {
   display: none;
 }
-
 
 @media (max-width: 700px) {
 
@@ -1836,31 +1840,39 @@ button {
 
 }
 
+
 /* ==================================================
    ACTIVITY MORE
-   ================================================== */
+================================================== */
 
 .activity-more {
   margin-top: 35px;
+
   text-align: center;
 }
 
 .activity-button {
   display: inline-flex;
+
   align-items: center;
   justify-content: center;
+
   gap: 20px;
 
   min-width: 200px;
+
   padding: 11px 18px;
 
   border: 1px solid var(--navy);
+
   border-radius: 4px;
 
   background: transparent;
+
   color: var(--navy);
 
   font-size: 13px;
+
   font-weight: 700;
 
   transition:
@@ -1870,21 +1882,24 @@ button {
 
 .activity-button span {
   font-size: 24px;
+
   line-height: 1;
 }
 
 .activity-button:hover {
   background: var(--navy);
+
   color: var(--white);
 }
 
 
 /* ==================================================
    SLIDESHOW
-   ================================================== */
+================================================== */
 
 .slideshow {
   margin: 0 0 100px;
+
   background: var(--white);
 }
 
@@ -1892,6 +1907,7 @@ button {
   position: relative;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
@@ -1902,9 +1918,11 @@ button {
   position: relative;
 
   width: 100%;
+
   max-width: 900px;
 
   overflow: hidden;
+
   background: #e5e8ed;
 }
 
@@ -1915,6 +1933,7 @@ button {
   height: auto;
 
   aspect-ratio: 16 / 9;
+
   object-fit: cover;
 }
 
@@ -1922,6 +1941,7 @@ button {
   aspect-ratio: 16 / 9;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
@@ -1933,56 +1953,109 @@ button {
   color: #667085;
 
   font-size: 13px;
+
   font-weight: 700;
 
   letter-spacing: .15em;
 }
 
+
+/* ==================================================
+   SLIDESHOW BUTTON
+================================================== */
+
+/*
+  ポイント
+  - 丸を小さめに
+  - 矢印は文字ではなくCSSで描画
+  - transformの影響を矢印に与えない
+  - positionで完全に中央配置
+*/
+
 .slideshow-button {
   position: absolute;
+
   top: 50%;
+
   z-index: 2;
 
-  transform: translateY(-50%);
-
-  width: 34px;
-  height: 34px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 30px;
+  height: 30px;
 
   padding: 0;
 
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
   border: 1px solid rgba(255, 255, 255, .65);
+
   border-radius: 50%;
 
-  background: rgba(6, 29, 65, .55);
-  color: var(--white);
+  background: rgba(6, 29, 65, .42);
 
-  font-size: 23px;
-  font-weight: 400;
-  line-height: 1;
+  color: transparent;
 
   cursor: pointer;
-  opacity: .9;
+
+  opacity: .85;
+
+  transform: translateY(-50%);
 
   transition:
     background .2s ease,
+    border-color .2s ease,
     opacity .2s ease,
     transform .2s ease;
 }
 
-.slideshow-button:hover {
-  background: rgba(6, 29, 65, .85);
-  opacity: 1;
-  transform: translateY(-50%) scale(1.05);
+
+/* ==================================================
+   CSS ARROW
+================================================== */
+
+.slideshow-button::before {
+  content: "";
+
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  width: 7px;
+  height: 7px;
+
+  border-top: 1.5px solid var(--white);
+  border-right: 1.5px solid var(--white);
+
+  transform-origin: center;
+
+  opacity: .95;
 }
 
-.slideshow-button:disabled {
-  opacity: .25;
-  cursor: default;
+
+/* 左矢印 */
+
+.slideshow-prev::before {
+  transform:
+    translate(-35%, -50%)
+    rotate(-135deg);
 }
+
+
+/* 右矢印 */
+
+.slideshow-next::before {
+  transform:
+    translate(-65%, -50%)
+    rotate(45deg);
+}
+
+
+/* ==================================================
+   BUTTON POSITION
+================================================== */
 
 .slideshow-prev {
   left: 12px;
@@ -1992,52 +2065,179 @@ button {
   right: 12px;
 }
 
+
+/* ==================================================
+   BUTTON HOVER
+================================================== */
+
+.slideshow-button:hover {
+  background: rgba(6, 29, 65, .72);
+
+  border-color: rgba(255, 255, 255, .9);
+
+  opacity: 1;
+
+  transform:
+    translateY(-50%)
+    scale(1.08);
+}
+
+
+/* ==================================================
+   DISABLED
+================================================== */
+
+.slideshow-button:disabled {
+  opacity: .2;
+
+  cursor: default;
+
+  pointer-events: none;
+}
+
+
+/* ==================================================
+   SLIDESHOW IMAGE ANIMATION
+================================================== */
+
 #slideshow-image {
   opacity: 1;
+
   transform: scale(1);
+
   transition:
-    opacity 0.6s ease,
-    transform 0.8s ease;
+    opacity .6s ease,
+    transform .8s ease;
 }
 
 #slideshow-image.is-changing {
   opacity: 0;
+
   transform: scale(1.03);
 }
 
+
 /* ==================================================
-   MOBILE OVERRIDES
-   ================================================== */
+   MOBILE SLIDESHOW
+================================================== */
 
 @media (max-width: 700px) {
-
-  .activity-more {
-    margin-top: 25px;
-    text-align: center;
-  }
-
-  .activity-button {
-    min-width: 200px;
-    padding: 11px 18px;
-    font-size: 13px;
-  }
 
   .slideshow {
     margin-bottom: 70px;
   }
 
+
+  /* スマホではさらに小さく */
+
   .slideshow-button {
-    width: 30px;
-    height: 30px;
-    font-size: 21px;
+    width: 24px;
+    height: 24px;
+
+    border-color: rgba(255, 255, 255, .55);
+
+    background: rgba(6, 29, 65, .38);
+
+    opacity: .78;
   }
 
+
+  /* スマホの矢印 */
+
+  .slideshow-button::before {
+    width: 6px;
+    height: 6px;
+
+    border-width: 1.3px;
+  }
+
+
+  /* 写真端から少しだけ離す */
+
   .slideshow-prev {
-    left: 8px;
+    left: 7px;
   }
 
   .slideshow-next {
-    right: 8px;
+    right: 7px;
+  }
+
+
+  /* タップ時 */
+
+  .slideshow-button:active {
+    background: rgba(6, 29, 65, .72);
+
+    transform:
+      translateY(-50%)
+      scale(.94);
+  }
+
+}
+
+
+/* ==================================================
+   SMALL MOBILE
+================================================== */
+
+@media (max-width: 400px) {
+
+  .site-name {
+    width: 82px;
+
+    max-width: 82px;
+  }
+
+  .site-name img {
+    width: 82px;
+  }
+
+  .hero {
+    min-height: 440px;
+  }
+
+  .hero-logo {
+    width: 78vw;
+  }
+
+  .hero-copy {
+    font-size: 12px;
+  }
+
+  .news-item {
+    grid-template-columns:
+      82px 65px 1fr 15px;
+
+    gap: 5px;
+  }
+
+  .news-title {
+    font-size: 11px;
+  }
+
+  .news-category {
+    font-size: 9px;
+  }
+
+
+  /* 極小画面ではさらに控えめ */
+
+  .slideshow-button {
+    width: 22px;
+    height: 22px;
+  }
+
+  .slideshow-button::before {
+    width: 5px;
+    height: 5px;
+  }
+
+  .slideshow-prev {
+    left: 6px;
+  }
+
+  .slideshow-next {
+    right: 6px;
   }
 
 }
