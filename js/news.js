@@ -3,8 +3,7 @@
 // /news/ 内のHTMLファイルを読み込んで表示
 // ==================================================
 
-const newsList =
-  document.querySelector("#news-all-list");
+const newsList = document.querySelector("#news-all-list");
 
 
 // 新しい順にファイル名を記載
@@ -19,13 +18,9 @@ async function loadAllNews() {
     return;
   }
 
-
   if (newsFiles.length === 0) {
-
     newsList.innerHTML = "";
-
     return;
-
   }
 
 
@@ -35,22 +30,17 @@ async function loadAllNews() {
 
       newsFiles.map(async (file) => {
 
-        const response =
-          await fetch(file);
-
+        const response = await fetch(
+          `./${file}`
+        );
 
         if (!response.ok) {
-
           throw new Error(
             `ニュースを読み込めませんでした: ${file}`
           );
-
         }
 
-
-        const html =
-          await response.text();
-
+        const html = await response.text();
 
         return {
           file: file,
@@ -62,82 +52,73 @@ async function loadAllNews() {
     );
 
 
-    newsList.innerHTML =
+    newsList.innerHTML = newsItems
 
-      newsItems
+      .map(item => {
 
-        .map(item => {
+        const parser = new DOMParser();
 
-          const parser =
-            new DOMParser();
-
-
-          const document =
-            parser.parseFromString(
-              item.html,
-              "text/html"
-            );
+        const document = parser.parseFromString(
+          item.html,
+          "text/html"
+        );
 
 
-          const article =
-            document.querySelector(
-              ".news-data"
-            );
+        const article = document.querySelector(
+          ".news-data"
+        );
 
 
-          if (!article) {
-            return "";
-          }
+        if (!article) {
+          return "";
+        }
 
 
-          const date =
-            article.dataset.date || "";
+        const date =
+          article.dataset.date || "";
 
-          const category =
-            article.dataset.category || "";
+        const category =
+          article.dataset.category || "";
 
-          const title =
-            article.dataset.title || "";
+        const title =
+          article.dataset.title || "";
 
-
-          // news/index.html からなので
-          // ファイル名だけでOK
-          const url =
-            item.file;
+        const url =
+          article.dataset.url || item.file;
 
 
-          return `
+        return `
 
-            <a
-              href="${url}"
-              class="news-page-item"
+          <a
+            href="./${url}"
+            class="news-page-item"
+          >
+
+            <time
+              datetime="${date.replace(/\./g, "-")}"
             >
+              ${date}
+            </time>
 
-              <time
-                datetime="${date.replace(/\./g, "-")}"
-              >
-                ${date}
-              </time>
+            <span class="news-page-category">
+              ${category}
+            </span>
 
-              <span class="news-page-category">
-                ${category}
-              </span>
+            <span class="news-page-title">
+              ${title}
+            </span>
 
-              <span class="news-page-title">
-                ${title}
-              </span>
+            <span class="news-page-arrow">
+              ›
+            </span>
 
-              <span class="news-page-arrow">
-                ›
-              </span>
+          </a>
 
-            </a>
+        `;
 
-          `;
+      })
 
-        })
-
-        .join("");
+      .join("");
 
 
   } catch (error) {
