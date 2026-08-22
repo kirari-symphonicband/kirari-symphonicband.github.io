@@ -1,15 +1,64 @@
 // ==================================================
+// Kirariシンフォニックバンドひろしま
+// Common JavaScript
+// ==================================================
+
+// ==================================================
+// SETTINGS
+// ==================================================
+
+// ------------------------------
+// NEWS
+// ------------------------------
+
+// トップページに表示するNEWSファイル
+// 新しいニュースを追加したら、ここに追加してください。
+// 上から新しい順に記載します。
+
+const TOP_NEWS_FILES = [
+  "2026-08-20.html"
+];
+
+
+// ------------------------------
+// SLIDESHOW
+// ------------------------------
+
+// スライドショーで使用する画像
+// 新しい画像を追加・変更する場合はここだけ編集してください。
+
+const SLIDESHOW_IMAGE_PATHS = [
+  "images/slideshow/photo1.jpeg",
+  "images/slideshow/photo2.jpeg",
+  "images/slideshow/photo3.jpeg",
+  "images/slideshow/photo4.jpeg",
+  "images/slideshow/photo5.jpeg"
+];
+
+// 自動スライドの切り替え時間（ミリ秒）
+// 5000 = 5秒
+
+const SLIDESHOW_INTERVAL = 5000;
+
+
+// ==================================================
 // Mobile menu
 // ==================================================
 
-const menuButton = document.querySelector(".menu-button");
-const globalNav = document.querySelector(".global-nav");
+const menuButton =
+  document.querySelector(".menu-button");
+
+const globalNav =
+  document.querySelector(".global-nav");
+
 
 if (menuButton && globalNav) {
 
   menuButton.addEventListener("click", () => {
 
-    const isOpen = globalNav.classList.toggle("is-open");
+    const isOpen =
+      globalNav.classList.toggle("is-open");
+
 
     menuButton.setAttribute(
       "aria-expanded",
@@ -18,49 +67,28 @@ if (menuButton && globalNav) {
 
   });
 
-
-  // メニューを選択したら閉じる
-  const navLinks = globalNav.querySelectorAll("a");
-
-  navLinks.forEach((link) => {
-
-    link.addEventListener("click", () => {
-
-      globalNav.classList.remove("is-open");
-
-      menuButton.setAttribute(
-        "aria-expanded",
-        "false"
-      );
-
-    });
-
-  });
-
 }
 
 
 // ==================================================
 // News
-// /news/ 内のHTMLファイルを読み込んで表示
+// トップページのNEWSを読み込んで表示
 // ==================================================
 
-const newsList = document.querySelector("#news-list");
-
-// 新しい順にファイル名を記載
-const newsFiles = [
-  "2026-08-20.html"
-];
+const newsList =
+  document.querySelector("#news-list");
 
 
 async function loadNews() {
 
+  // トップページ以外では何もしない
   if (!newsList) {
     return;
   }
 
 
-  if (newsFiles.length === 0) {
+  // NEWSが0件の場合
+  if (TOP_NEWS_FILES.length === 0) {
 
     newsList.innerHTML = "";
 
@@ -71,113 +99,130 @@ async function loadNews() {
 
   try {
 
-    const newsItems = await Promise.all(
+    const newsItems =
+      await Promise.all(
 
-      newsFiles.map(async (file) => {
+        TOP_NEWS_FILES.map(async (file) => {
 
-        const response = await fetch(
-          `news/${file}`
-        );
-
-
-        if (!response.ok) {
-
-          throw new Error(
-            `ニュースを読み込めませんでした: ${file}`
-          );
-
-        }
+          // トップページから
+          // /news/ 内のHTMLを読み込む
+          const response =
+            await fetch(`news/${file}`);
 
 
-        const html = await response.text();
+          if (!response.ok) {
+
+            throw new Error(
+              `ニュースを読み込めませんでした: ${file}`
+            );
+
+          }
 
 
-        return {
-          file: file,
-          html: html
-        };
-
-      })
-
-    );
+          const html =
+            await response.text();
 
 
-    newsList.innerHTML = newsItems
+          return {
+            file: file,
+            html: html
+          };
 
-      .map(item => {
+        })
 
-        const parser = new DOMParser();
-
-        const document =
-          parser.parseFromString(
-            item.html,
-            "text/html"
-          );
+      );
 
 
-        const article =
-          document.querySelector(
-            ".news-data"
-          );
+    newsList.innerHTML =
+
+      newsItems
+
+        .map(item => {
+
+          const parser =
+            new DOMParser();
 
 
-        if (!article) {
-          return "";
-        }
+          const document =
+            parser.parseFromString(
+              item.html,
+              "text/html"
+            );
 
 
-        const date =
-          article.dataset.date || "";
-
-        const category =
-          article.dataset.category || "";
-
-        const title =
-          article.dataset.title || "";
+          const article =
+            document.querySelector(
+              ".news-data"
+            );
 
 
-        // TOPページからなので news/ を付ける
-        const url =
-          `news/${item.file}`;
+          if (!article) {
+
+            console.error(
+              `${item.file} に .news-data がありません。`
+            );
+
+            return "";
+
+          }
 
 
-        return `
+          const date =
+            article.dataset.date || "";
 
-          <a
-            href="${url}"
-            class="news-item"
-          >
+          const category =
+            article.dataset.category || "";
 
-            <time
-              datetime="${date.replace(/\./g, "-")}"
+          const title =
+            article.dataset.title || "";
+
+
+          // トップページからNEWSページへ
+          const url =
+            `news/${item.file}`;
+
+
+          return `
+
+            <a
+              href="${url}"
+              class="news-item"
             >
-              ${date}
-            </time>
 
-            <span class="news-category">
-              ${category}
-            </span>
+              <time
+                datetime="${date.replace(/\./g, "-")}"
+              >
+                ${date}
+              </time>
 
-            <span class="news-title">
-              ${title}
-            </span>
+              <span class="news-category">
+                ${category}
+              </span>
 
-            <span class="news-arrow">
-              ›
-            </span>
+              <span class="news-title">
+                ${title}
+              </span>
 
-          </a>
+              <span class="news-arrow">
+                ›
+              </span>
 
-        `;
+            </a>
 
-      })
+          `;
 
-      .join("");
+        })
+
+        .join("");
 
 
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      "NEWS読み込みエラー:",
+      error
+    );
+
 
     newsList.innerHTML = `
 
@@ -215,18 +260,11 @@ const slideshowNext =
   document.querySelector(".slideshow-next");
 
 
-// 使用する画像
-const slideshowImagePaths = [
-  "images/slideshow/photo1.jpeg",
-  "images/slideshow/photo2.jpeg",
-  "images/slideshow/photo3.jpeg",
-  "images/slideshow/photo4.jpeg",
-  "images/slideshow/photo5.jpeg"
-];
-
-
+// スライドショーで実際に存在する画像
 let slideshowImages = [];
+
 let currentSlide = 0;
+
 let slideshowTimer = null;
 
 
@@ -238,16 +276,21 @@ function checkImageExists(src) {
 
   return new Promise((resolve) => {
 
-    const image = new Image();
+    const image =
+      new Image();
 
 
     image.onload = () => {
+
       resolve(true);
+
     };
 
 
     image.onerror = () => {
+
       resolve(false);
+
     };
 
 
@@ -269,48 +312,70 @@ async function initializeSlideshow() {
     !slideshowImage ||
     !slideshowPlaceholder
   ) {
+
     return;
+
   }
 
 
   // 存在する画像だけを残す
-  const results = await Promise.all(
+  const results =
+    await Promise.all(
 
-    slideshowImagePaths.map(async (src) => {
+      SLIDESHOW_IMAGE_PATHS.map(
+        async (src) => {
 
-      const exists =
-        await checkImageExists(src);
-
-      return {
-        src: src,
-        exists: exists
-      };
-
-    })
-
-  );
+          const exists =
+            await checkImageExists(src);
 
 
-  slideshowImages = results
-    .filter(item => item.exists)
-    .map(item => item.src);
+          return {
+            src: src,
+            exists: exists
+          };
+
+        }
+      )
+
+    );
+
+
+  slideshowImages =
+    results
+
+      .filter(
+        item => item.exists
+      )
+
+      .map(
+        item => item.src
+      );
 
 
   // 写真が1枚もない場合
   if (slideshowImages.length === 0) {
 
-    slideshowImage.style.display = "none";
+    slideshowImage.style.display =
+      "none";
 
-    slideshowPlaceholder.style.display = "flex";
+
+    slideshowPlaceholder.style.display =
+      "flex";
 
 
     if (slideshowPrev) {
-      slideshowPrev.disabled = true;
+
+      slideshowPrev.disabled =
+        true;
+
     }
 
 
     if (slideshowNext) {
-      slideshowNext.disabled = true;
+
+      slideshowNext.disabled =
+        true;
+
     }
 
 
@@ -320,13 +385,18 @@ async function initializeSlideshow() {
 
 
   // 写真がある場合
-  slideshowPlaceholder.style.display = "none";
+  slideshowPlaceholder.style.display =
+    "none";
 
-  slideshowImage.style.display = "block";
+
+  slideshowImage.style.display =
+    "block";
 
 
-  // 最初の写真を表示
-  slideshowImage.src = slideshowImages[0];
+  // 最初の写真
+  slideshowImage.src =
+    slideshowImages[0];
+
 
   slideshowImage.classList.remove(
     "is-changing"
@@ -337,12 +407,18 @@ async function initializeSlideshow() {
   if (slideshowImages.length > 1) {
 
     if (slideshowPrev) {
-      slideshowPrev.disabled = false;
+
+      slideshowPrev.disabled =
+        false;
+
     }
 
 
     if (slideshowNext) {
-      slideshowNext.disabled = false;
+
+      slideshowNext.disabled =
+        false;
+
     }
 
 
@@ -351,12 +427,18 @@ async function initializeSlideshow() {
   } else {
 
     if (slideshowPrev) {
-      slideshowPrev.disabled = true;
+
+      slideshowPrev.disabled =
+        true;
+
     }
 
 
     if (slideshowNext) {
-      slideshowNext.disabled = true;
+
+      slideshowNext.disabled =
+        true;
+
     }
 
   }
@@ -366,7 +448,6 @@ async function initializeSlideshow() {
 
 // ==================================================
 // スライド表示
-// フェード＋少しズーム
 // ==================================================
 
 function showSlide(index) {
@@ -375,7 +456,9 @@ function showSlide(index) {
     !slideshowImage ||
     slideshowImages.length === 0
   ) {
+
     return;
+
   }
 
 
@@ -395,20 +478,20 @@ function showSlide(index) {
   }
 
 
-  // フェードアウト開始
+  // フェードアウト
   slideshowImage.classList.add(
     "is-changing"
   );
 
 
-  // フェードアウトしてから写真を変更
+  // 写真変更
   setTimeout(() => {
 
     slideshowImage.src =
       slideshowImages[currentSlide];
 
 
-    // 新しい画像の読み込み完了後にフェードイン
+    // 新しい画像読み込み後に表示
     slideshowImage.onload = () => {
 
       slideshowImage.classList.remove(
@@ -433,11 +516,16 @@ if (slideshowPrev) {
     () => {
 
       if (slideshowImages.length <= 1) {
+
         return;
+
       }
 
 
-      showSlide(currentSlide - 1);
+      showSlide(
+        currentSlide - 1
+      );
+
 
       resetSlideshowTimer();
 
@@ -458,11 +546,16 @@ if (slideshowNext) {
     () => {
 
       if (slideshowImages.length <= 1) {
+
         return;
+
       }
 
 
-      showSlide(currentSlide + 1);
+      showSlide(
+        currentSlide + 1
+      );
+
 
       resetSlideshowTimer();
 
@@ -478,18 +571,25 @@ if (slideshowNext) {
 
 function startSlideshowTimer() {
 
-  clearInterval(slideshowTimer);
+  clearInterval(
+    slideshowTimer
+  );
 
 
-  slideshowTimer = setInterval(() => {
+  slideshowTimer =
+    setInterval(() => {
 
-    if (slideshowImages.length > 1) {
+      if (
+        slideshowImages.length > 1
+      ) {
 
-      showSlide(currentSlide + 1);
+        showSlide(
+          currentSlide + 1
+        );
 
-    }
+      }
 
-  }, 5000);
+    }, SLIDESHOW_INTERVAL);
 
 }
 
@@ -500,8 +600,12 @@ function startSlideshowTimer() {
 
 function resetSlideshowTimer() {
 
-  if (slideshowImages.length <= 1) {
+  if (
+    slideshowImages.length <= 1
+  ) {
+
     return;
+
   }
 
 
@@ -519,23 +623,32 @@ initializeSlideshow();
 
 // ==================================================
 // Instagram
-// 画像が存在しない場合、その投稿枠を自動的に非表示にする
+// 画像が存在しない場合、投稿枠を非表示
 // ==================================================
 
 document
-  .querySelectorAll(".instagram-item img")
+  .querySelectorAll(
+    ".instagram-item img"
+  )
   .forEach((img) => {
 
-    img.addEventListener("error", () => {
+    img.addEventListener(
+      "error",
+      () => {
 
-      const item =
-        img.closest(".instagram-item");
+        const item =
+          img.closest(
+            ".instagram-item"
+          );
 
 
-      if (item) {
-        item.remove();
+        if (item) {
+
+          item.remove();
+
+        }
+
       }
-
-    });
+    );
 
   });

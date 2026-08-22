@@ -1,24 +1,51 @@
 // ==================================================
-// News List
-// /news/ 内のHTMLファイルを読み込んで表示
+// Kirariシンフォニックバンドひろしま
+// NEWS JavaScript
+// ==================================================
+
+// ==================================================
+// SETTINGS
+// ==================================================
+
+// ------------------------------
+// NEWS
+// ------------------------------
+
+// NEWS一覧に表示するファイル
+// 新しいニュースを追加したら、ここに追加してください。
+// 上から新しい順に記載します。
+
+const NEWS_FILES = [
+  "2026-08-20.html"
+];
+
+
+// ==================================================
+// NEWS LIST
 // ==================================================
 
 const newsList =
   document.querySelector("#news-all-list");
 
 
-const newsFiles = [
-  "2026-08-20.html"
-];
-
+// ==================================================
+// LOAD NEWS
+// ==================================================
 
 async function loadAllNews() {
 
+  // NEWS一覧ページ以外では何もしない
   if (!newsList) {
 
-    console.error(
-      "#news-all-list が見つかりません。"
-    );
+    return;
+
+  }
+
+
+  // NEWSが0件の場合
+  if (NEWS_FILES.length === 0) {
+
+    newsList.innerHTML = "";
 
     return;
 
@@ -27,49 +54,61 @@ async function loadAllNews() {
 
   try {
 
-    const newsItems = await Promise.all(
+    const newsItems =
+      await Promise.all(
 
-      newsFiles.map(async (file) => {
+        NEWS_FILES.map(
+          async (file) => {
 
-        const url =
-          new URL(
-            file,
-            window.location.href
-          ).href;
-
-
-        console.log(
-          "ニュース読み込み:",
-          url
-        );
+            // /news/index.html から
+            // 同じ /news/ 内のHTMLを読み込む
+            const url =
+              new URL(
+                file,
+                window.location.href
+              ).href;
 
 
-        const response =
-          await fetch(url);
+            console.log(
+              "ニュース読み込み:",
+              url
+            );
 
 
-        if (!response.ok) {
-
-          throw new Error(
-            `HTTP ${response.status}: ${url}`
-          );
-
-        }
+            const response =
+              await fetch(url);
 
 
-        const html =
-          await response.text();
+            if (!response.ok) {
+
+              throw new Error(
+                `HTTP ${response.status}: ${url}`
+              );
+
+            }
 
 
-        return {
-          file: file,
-          html: html
-        };
+            const html =
+              await response.text();
 
-      })
 
-    );
+            return {
 
+              file: file,
+
+              html: html
+
+            };
+
+          }
+        )
+
+      );
+
+
+    // ==================================================
+    // HTML生成
+    // ==================================================
 
     newsList.innerHTML =
 
@@ -108,14 +147,20 @@ async function loadAllNews() {
           const date =
             article.dataset.date || "";
 
+
           const category =
             article.dataset.category || "";
+
 
           const title =
             article.dataset.title || "";
 
+
+          // ニュースHTML側に
+          // data-url があればそれを使用
           const url =
-            article.dataset.url || item.file;
+            article.dataset.url ||
+            item.file;
 
 
           return `
@@ -172,5 +217,9 @@ async function loadAllNews() {
 
 }
 
+
+// ==================================================
+// START
+// ==================================================
 
 loadAllNews();
