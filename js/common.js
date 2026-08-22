@@ -7,12 +7,13 @@
 // SETTINGS
 // ==================================================
 
-// ------------------------------
-// NEWS
-// ------------------------------
+
+// ==================================================
+// TOP NEWS
+// ==================================================
 
 // トップページに表示するNEWSファイル
-// 新しいニュースを追加したら、ここに追加してください。
+// 新しいNEWSを追加したら、ここにファイル名を追加してください。
 // 上から新しい順に記載します。
 
 const TOP_NEWS_FILES = [
@@ -20,12 +21,12 @@ const TOP_NEWS_FILES = [
 ];
 
 
-// ------------------------------
+// ==================================================
 // SLIDESHOW
-// ------------------------------
+// ==================================================
 
 // スライドショーで使用する画像
-// 新しい画像を追加・変更する場合はここだけ編集してください。
+// 画像を追加・変更する場合はここだけ編集してください。
 
 const SLIDESHOW_IMAGE_PATHS = [
   "images/slideshow/photo1.jpeg",
@@ -35,14 +36,14 @@ const SLIDESHOW_IMAGE_PATHS = [
   "images/slideshow/photo5.jpeg"
 ];
 
-// 自動スライドの切り替え時間（ミリ秒）
-// 5000 = 5秒
+
+// 自動スライドの切り替え時間
 
 const SLIDESHOW_INTERVAL = 5000;
 
 
 // ==================================================
-// Mobile menu
+// MOBILE MENU
 // ==================================================
 
 const menuButton =
@@ -54,35 +55,40 @@ const globalNav =
 
 if (menuButton && globalNav) {
 
-  menuButton.addEventListener("click", () => {
+  menuButton.addEventListener(
+    "click",
+    () => {
 
-    const isOpen =
-      globalNav.classList.toggle("is-open");
+      const isOpen =
+        globalNav.classList.toggle(
+          "is-open"
+        );
 
 
-    menuButton.setAttribute(
-      "aria-expanded",
-      String(isOpen)
-    );
+      menuButton.setAttribute(
+        "aria-expanded",
+        String(isOpen)
+      );
 
-  });
+    }
+  );
 
 }
 
 
 // ==================================================
-// News
+// TOP NEWS
 // トップページのNEWSを読み込んで表示
 // ==================================================
 
-const newsList =
+const topNewsList =
   document.querySelector("#news-list");
 
 
-async function loadNews() {
+async function loadTopNews() {
 
   // トップページ以外では何もしない
-  if (!newsList) {
+  if (!topNewsList) {
     return;
   }
 
@@ -90,7 +96,7 @@ async function loadNews() {
   // NEWSが0件の場合
   if (TOP_NEWS_FILES.length === 0) {
 
-    newsList.innerHTML = "";
+    topNewsList.innerHTML = "";
 
     return;
 
@@ -102,116 +108,138 @@ async function loadNews() {
     const newsItems =
       await Promise.all(
 
-        TOP_NEWS_FILES.map(async (file) => {
+        TOP_NEWS_FILES.map(
+          async (file) => {
 
-          // トップページから
-          // /news/ 内のHTMLを読み込む
-          const response =
-            await fetch(`news/${file}`);
+            // トップページから
+            // /news/ 内のHTMLを読み込む
+            const response =
+              await fetch(
+                `news/${file}`
+              );
 
 
-          if (!response.ok) {
+            if (!response.ok) {
 
-            throw new Error(
-              `ニュースを読み込めませんでした: ${file}`
-            );
+              throw new Error(
+                `ニュースを読み込めませんでした: ${file}`
+              );
+
+            }
+
+
+            const html =
+              await response.text();
+
+
+            return {
+              file: file,
+              html: html
+            };
 
           }
-
-
-          const html =
-            await response.text();
-
-
-          return {
-            file: file,
-            html: html
-          };
-
-        })
+        )
 
       );
 
 
-    newsList.innerHTML =
+    // ==================================================
+    // NEWS HTML生成
+    // ==================================================
+
+    topNewsList.innerHTML =
 
       newsItems
 
-        .map(item => {
+        .map(
+          (item) => {
 
-          const parser =
-            new DOMParser();
-
-
-          const document =
-            parser.parseFromString(
-              item.html,
-              "text/html"
-            );
+            const parser =
+              new DOMParser();
 
 
-          const article =
-            document.querySelector(
-              ".news-data"
-            );
+            const newsDocument =
+              parser.parseFromString(
+                item.html,
+                "text/html"
+              );
 
 
-          if (!article) {
+            const article =
+              newsDocument.querySelector(
+                ".news-data"
+              );
 
-            console.error(
-              `${item.file} に .news-data がありません。`
-            );
 
-            return "";
+            if (!article) {
+
+              console.error(
+                `${item.file} に .news-data がありません。`
+              );
+
+              return "";
+
+            }
+
+
+            const date =
+              article.dataset.date || "";
+
+
+            const category =
+              article.dataset.category || "";
+
+
+            const title =
+              article.dataset.title || "";
+
+
+            // トップページから
+            // NEWS記事ページへ移動
+            const url =
+              `news/${item.file}`;
+
+
+            return `
+
+              <a
+                href="${url}"
+                class="news-item"
+              >
+
+                <time
+                  datetime="${date.replace(
+              /\./g,
+              "-"
+            )}"
+                >
+                  ${date}
+                </time>
+
+                <span
+                  class="news-category"
+                >
+                  ${category}
+                </span>
+
+                <span
+                  class="news-title"
+                >
+                  ${title}
+                </span>
+
+                <span
+                  class="news-arrow"
+                >
+                  ›
+                </span>
+
+              </a>
+
+            `;
 
           }
-
-
-          const date =
-            article.dataset.date || "";
-
-          const category =
-            article.dataset.category || "";
-
-          const title =
-            article.dataset.title || "";
-
-
-          // トップページからNEWSページへ
-          const url =
-            `news/${item.file}`;
-
-
-          return `
-
-            <a
-              href="${url}"
-              class="news-item"
-            >
-
-              <time
-                datetime="${date.replace(/\./g, "-")}"
-              >
-                ${date}
-              </time>
-
-              <span class="news-category">
-                ${category}
-              </span>
-
-              <span class="news-title">
-                ${title}
-              </span>
-
-              <span class="news-arrow">
-                ›
-              </span>
-
-            </a>
-
-          `;
-
-        })
+        )
 
         .join("");
 
@@ -219,12 +247,12 @@ async function loadNews() {
   } catch (error) {
 
     console.error(
-      "NEWS読み込みエラー:",
+      "トップページNEWS読み込みエラー:",
       error
     );
 
 
-    newsList.innerHTML = `
+    topNewsList.innerHTML = `
 
       <p class="news-error">
         お知らせを読み込めませんでした。
@@ -237,76 +265,100 @@ async function loadNews() {
 }
 
 
-loadNews();
+// ==================================================
+// TOP NEWS START
+// ==================================================
+
+loadTopNews();
 
 
 // ==================================================
-// Slideshow
+// SLIDESHOW
 // ==================================================
 
 const slideshow =
   document.querySelector("#slideshow");
 
+
 const slideshowImage =
-  document.querySelector("#slideshow-image");
+  document.querySelector(
+    "#slideshow-image"
+  );
+
 
 const slideshowPlaceholder =
-  document.querySelector("#slideshow-placeholder");
+  document.querySelector(
+    "#slideshow-placeholder"
+  );
+
 
 const slideshowPrev =
-  document.querySelector(".slideshow-prev");
+  document.querySelector(
+    ".slideshow-prev"
+  );
+
 
 const slideshowNext =
-  document.querySelector(".slideshow-next");
+  document.querySelector(
+    ".slideshow-next"
+  );
 
 
-// スライドショーで実際に存在する画像
+// 実際に存在する画像だけを格納
 let slideshowImages = [];
 
+
+// 現在表示している画像番号
 let currentSlide = 0;
 
+
+// 自動スライド用タイマー
 let slideshowTimer = null;
 
 
 // ==================================================
+// IMAGE CHECK
 // 画像の存在確認
 // ==================================================
 
 function checkImageExists(src) {
 
-  return new Promise((resolve) => {
+  return new Promise(
+    (resolve) => {
 
-    const image =
-      new Image();
-
-
-    image.onload = () => {
-
-      resolve(true);
-
-    };
+      const image =
+        new Image();
 
 
-    image.onerror = () => {
+      image.onload = () => {
 
-      resolve(false);
+        resolve(true);
 
-    };
+      };
 
 
-    image.src = src;
+      image.onerror = () => {
 
-  });
+        resolve(false);
+
+      };
+
+
+      image.src = src;
+
+    }
+  );
 
 }
 
 
 // ==================================================
-// スライドショー初期化
+// SLIDESHOW INITIALIZE
 // ==================================================
 
 async function initializeSlideshow() {
 
+  // スライドショーが存在しないページでは終了
   if (
     !slideshow ||
     !slideshowImage ||
@@ -318,7 +370,10 @@ async function initializeSlideshow() {
   }
 
 
-  // 存在する画像だけを残す
+  // ==================================================
+  // 存在する画像を確認
+  // ==================================================
+
   const results =
     await Promise.all(
 
@@ -326,7 +381,9 @@ async function initializeSlideshow() {
         async (src) => {
 
           const exists =
-            await checkImageExists(src);
+            await checkImageExists(
+              src
+            );
 
 
           return {
@@ -344,16 +401,21 @@ async function initializeSlideshow() {
     results
 
       .filter(
-        item => item.exists
+        (item) => item.exists
       )
 
       .map(
-        item => item.src
+        (item) => item.src
       );
 
 
-  // 写真が1枚もない場合
-  if (slideshowImages.length === 0) {
+  // ==================================================
+  // 画像が1枚もない場合
+  // ==================================================
+
+  if (
+    slideshowImages.length === 0
+  ) {
 
     slideshowImage.style.display =
       "none";
@@ -384,7 +446,10 @@ async function initializeSlideshow() {
   }
 
 
-  // 写真がある場合
+  // ==================================================
+  // 画像がある場合
+  // ==================================================
+
   slideshowPlaceholder.style.display =
     "none";
 
@@ -393,7 +458,7 @@ async function initializeSlideshow() {
     "block";
 
 
-  // 最初の写真
+  // 最初の画像を表示
   slideshowImage.src =
     slideshowImages[0];
 
@@ -403,8 +468,13 @@ async function initializeSlideshow() {
   );
 
 
-  // 写真が2枚以上ある場合
-  if (slideshowImages.length > 1) {
+  // ==================================================
+  // 画像が2枚以上ある場合
+  // ==================================================
+
+  if (
+    slideshowImages.length > 1
+  ) {
 
     if (slideshowPrev) {
 
@@ -447,6 +517,7 @@ async function initializeSlideshow() {
 
 
 // ==================================================
+// SHOW SLIDE
 // スライド表示
 // ==================================================
 
@@ -462,11 +533,19 @@ function showSlide(index) {
   }
 
 
-  if (index >= slideshowImages.length) {
+  // ==================================================
+  // 次の画像番号を決定
+  // ==================================================
+
+  if (
+    index >= slideshowImages.length
+  ) {
 
     currentSlide = 0;
 
-  } else if (index < 0) {
+  } else if (
+    index < 0
+  ) {
 
     currentSlide =
       slideshowImages.length - 1;
@@ -478,34 +557,48 @@ function showSlide(index) {
   }
 
 
+  // ==================================================
   // フェードアウト
+  // ==================================================
+
   slideshowImage.classList.add(
     "is-changing"
   );
 
 
-  // 写真変更
-  setTimeout(() => {
+  // ==================================================
+  // 画像変更
+  // ==================================================
 
-    slideshowImage.src =
-      slideshowImages[currentSlide];
+  setTimeout(
+    () => {
+
+      slideshowImage.src =
+        slideshowImages[
+        currentSlide
+        ];
 
 
-    // 新しい画像読み込み後に表示
-    slideshowImage.onload = () => {
+      // 新しい画像の読み込み完了後
+      // フェードイン
+      slideshowImage.onload =
+        () => {
 
-      slideshowImage.classList.remove(
-        "is-changing"
-      );
+          slideshowImage.classList.remove(
+            "is-changing"
+          );
 
-    };
+        };
 
-  }, 300);
+    },
+    300
+  );
 
 }
 
 
 // ==================================================
+// PREVIOUS SLIDE
 // 前の写真
 // ==================================================
 
@@ -515,7 +608,9 @@ if (slideshowPrev) {
     "click",
     () => {
 
-      if (slideshowImages.length <= 1) {
+      if (
+        slideshowImages.length <= 1
+      ) {
 
         return;
 
@@ -536,6 +631,7 @@ if (slideshowPrev) {
 
 
 // ==================================================
+// NEXT SLIDE
 // 次の写真
 // ==================================================
 
@@ -545,7 +641,9 @@ if (slideshowNext) {
     "click",
     () => {
 
-      if (slideshowImages.length <= 1) {
+      if (
+        slideshowImages.length <= 1
+      ) {
 
         return;
 
@@ -566,7 +664,7 @@ if (slideshowNext) {
 
 
 // ==================================================
-// 自動スライド開始
+// START SLIDESHOW TIMER
 // ==================================================
 
 function startSlideshowTimer() {
@@ -577,25 +675,28 @@ function startSlideshowTimer() {
 
 
   slideshowTimer =
-    setInterval(() => {
+    setInterval(
+      () => {
 
-      if (
-        slideshowImages.length > 1
-      ) {
+        if (
+          slideshowImages.length > 1
+        ) {
 
-        showSlide(
-          currentSlide + 1
-        );
+          showSlide(
+            currentSlide + 1
+          );
 
-      }
+        }
 
-    }, SLIDESHOW_INTERVAL);
+      },
+      SLIDESHOW_INTERVAL
+    );
 
 }
 
 
 // ==================================================
-// 自動スライドリセット
+// RESET SLIDESHOW TIMER
 // ==================================================
 
 function resetSlideshowTimer() {
@@ -615,14 +716,14 @@ function resetSlideshowTimer() {
 
 
 // ==================================================
-// スライドショー実行
+// SLIDESHOW START
 // ==================================================
 
 initializeSlideshow();
 
 
 // ==================================================
-// Instagram
+// INSTAGRAM
 // 画像が存在しない場合、投稿枠を非表示
 // ==================================================
 
@@ -630,25 +731,27 @@ document
   .querySelectorAll(
     ".instagram-item img"
   )
-  .forEach((img) => {
+  .forEach(
+    (img) => {
 
-    img.addEventListener(
-      "error",
-      () => {
+      img.addEventListener(
+        "error",
+        () => {
 
-        const item =
-          img.closest(
-            ".instagram-item"
-          );
+          const item =
+            img.closest(
+              ".instagram-item"
+            );
 
 
-        if (item) {
+          if (item) {
 
-          item.remove();
+            item.remove();
+
+          }
 
         }
+      );
 
-      }
-    );
-
-  });
+    }
+  );

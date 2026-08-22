@@ -3,17 +3,13 @@
 // NEWS JavaScript
 // ==================================================
 
-// ==================================================
-// SETTINGS
-// ==================================================
 
-// ------------------------------
-// NEWS
-// ------------------------------
+// ==================================================
+// NEWS SETTINGS
+// ==================================================
 
 // NEWS一覧に表示するファイル
-// 新しいニュースを追加したら、ここに追加してください。
-// 上から新しい順に記載します。
+// 新しい順に記載してください。
 
 const NEWS_FILES = [
   "2026-08-20.html"
@@ -24,7 +20,7 @@ const NEWS_FILES = [
 // NEWS LIST
 // ==================================================
 
-const newsList =
+const allNewsList =
   document.querySelector("#news-all-list");
 
 
@@ -35,17 +31,15 @@ const newsList =
 async function loadAllNews() {
 
   // NEWS一覧ページ以外では何もしない
-  if (!newsList) {
-
+  if (!allNewsList) {
     return;
-
   }
 
 
   // NEWSが0件の場合
   if (NEWS_FILES.length === 0) {
 
-    newsList.innerHTML = "";
+    allNewsList.innerHTML = "";
 
     return;
 
@@ -60,8 +54,6 @@ async function loadAllNews() {
         NEWS_FILES.map(
           async (file) => {
 
-            // /news/index.html から
-            // 同じ /news/ 内のHTMLを読み込む
             const url =
               new URL(
                 file,
@@ -93,11 +85,8 @@ async function loadAllNews() {
 
 
             return {
-
               file: file,
-
               html: html
-
             };
 
           }
@@ -110,7 +99,7 @@ async function loadAllNews() {
     // HTML生成
     // ==================================================
 
-    newsList.innerHTML =
+    allNewsList.innerHTML =
 
       newsItems
 
@@ -156,8 +145,6 @@ async function loadAllNews() {
             article.dataset.title || "";
 
 
-          // ニュースHTML側に
-          // data-url があればそれを使用
           const url =
             article.dataset.url ||
             item.file;
@@ -200,12 +187,12 @@ async function loadAllNews() {
   } catch (error) {
 
     console.error(
-      "NEWS読み込みエラー:",
+      "NEWS一覧読み込みエラー:",
       error
     );
 
 
-    newsList.innerHTML = `
+    allNewsList.innerHTML = `
 
       <p class="news-error">
         お知らせを読み込めませんでした。
