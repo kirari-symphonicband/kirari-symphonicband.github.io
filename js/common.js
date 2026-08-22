@@ -18,6 +18,25 @@ if (menuButton && globalNav) {
 
   });
 
+
+  // メニューを選択したら閉じる
+  const navLinks = globalNav.querySelectorAll("a");
+
+  navLinks.forEach((link) => {
+
+    link.addEventListener("click", () => {
+
+      globalNav.classList.remove("is-open");
+
+      menuButton.setAttribute(
+        "aria-expanded",
+        "false"
+      );
+
+    });
+
+  });
+
 }
 
 
