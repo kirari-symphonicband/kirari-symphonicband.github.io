@@ -216,7 +216,7 @@ button {
 ================================================== */
 
 .hero {
-  min-height: 600px;
+  min-height: 580px;
 
   display: flex;
 
@@ -302,7 +302,7 @@ button {
 
   gap: 30px;
 
-  min-width: 270px;
+  min-width: 200px;
 
   padding: 12px 22px;
 
@@ -708,7 +708,7 @@ button {
 
   color: var(--gold);
 
-  font-size: 35px;
+  font-size: 30px;
 
   line-height: 1;
 }
@@ -1297,7 +1297,7 @@ button {
   ==================== */
 
   .hero {
-    min-height: 370px;
+    min-height: 350px;
   }
 
   .hero-inner {
@@ -1329,9 +1329,9 @@ button {
   }
 
   .hero-button {
-    min-width: 210px;
+    min-width: 150px;
 
-    padding: 9px 15px;
+    padding: 9px 5px;
 
     gap: 18px;
 
@@ -1489,7 +1489,7 @@ button {
   }
 
   .concert-date strong {
-    font-size: 34px;
+    font-size: 30px;
   }
 
   .concert-content {
