@@ -57,10 +57,15 @@ if (!activityRecords) {
 
       lines.forEach(line => {
 
+        // ------------------------------------------
         // 年
-        if (/^\d{4}$/.test(line)) {
+        // 例：2026年
+        // ------------------------------------------
 
-          currentYear = line;
+        if (/^\d{4}年$/.test(line)) {
+
+          currentYear =
+            line.replace("年", "");
 
           const yearSection =
             document.createElement("section");
@@ -88,11 +93,15 @@ if (!activityRecords) {
           return;
         }
 
+        // ------------------------------------------
         // 活動記録
+        // 例：8月9日 第67回広島県吹奏楽コンクール
+        // ------------------------------------------
+
         if (currentYear) {
 
           const match = line.match(
-            /^(\d{1,2})\/(\d{1,2})\s+(.+)$/
+            /^(\d{1,2})月(\d{1,2})日\s+(.+)$/
           );
 
           if (!match) {
@@ -106,9 +115,14 @@ if (!activityRecords) {
 
           }
 
-          const month = Number(match[1]);
-          const day = Number(match[2]);
-          const activityName = match[3];
+          const month =
+            Number(match[1]);
+
+          const day =
+            Number(match[2]);
+
+          const activityName =
+            match[3];
 
           const recordItem =
             document.createElement("div");
