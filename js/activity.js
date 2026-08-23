@@ -3,20 +3,49 @@
 // 活動記録を外部ファイルから読み込み、表示する
 // ==================================================
 
-const activityRecords = document.querySelector(".activity-records");
+console.log("activity.js 読み込み開始");
 
-if (activityRecords) {
+const activityRecords =
+  document.querySelector(".activity-records");
+
+if (!activityRecords) {
+
+  console.error(
+    ".activity-records が見つかりません。"
+  );
+
+} else {
+
+  console.log(
+    ".activity-records を取得しました。"
+  );
 
   fetch("../data/activity.txt")
     .then(response => {
+
+      console.log(
+        "activity.txt response:",
+        response.status
+      );
+
       if (!response.ok) {
-        throw new Error("活動記録ファイルを読み込めませんでした。");
+
+        throw new Error(
+          `活動記録ファイルを読み込めませんでした: HTTP ${response.status}`
+        );
+
       }
 
       return response.text();
+
     })
 
     .then(text => {
+
+      console.log(
+        "activity.txt 読み込み成功:",
+        text
+      );
 
       const lines = text
         .split(/\r?\n/)
@@ -24,43 +53,42 @@ if (activityRecords) {
         .filter(line => line !== "");
 
       let currentYear = null;
-      let currentYearSection = null;
       let currentRecordList = null;
 
       lines.forEach(line => {
 
-        // ------------------------------------------
         // 年
-        // 例：2026
-        // ------------------------------------------
-
         if (/^\d{4}$/.test(line)) {
 
           currentYear = line;
 
-          currentYearSection = document.createElement("section");
-          currentYearSection.className = "activity-year";
+          const yearSection =
+            document.createElement("section");
 
-          const yearTitle = document.createElement("h2");
-          yearTitle.textContent = `${currentYear}年`;
+          yearSection.className =
+            "activity-year";
 
-          currentRecordList = document.createElement("div");
-          currentRecordList.className = "activity-record-list";
+          const yearTitle =
+            document.createElement("h2");
 
-          currentYearSection.appendChild(yearTitle);
-          currentYearSection.appendChild(currentRecordList);
+          yearTitle.textContent =
+            `${currentYear}年`;
 
-          activityRecords.appendChild(currentYearSection);
+          currentRecordList =
+            document.createElement("div");
+
+          currentRecordList.className =
+            "activity-record-list";
+
+          yearSection.appendChild(yearTitle);
+          yearSection.appendChild(currentRecordList);
+
+          activityRecords.appendChild(yearSection);
 
           return;
         }
 
-
-        // ------------------------------------------
         // 活動記録
-        // 例：8/9 第67回広島県吹奏楽コンクール
-        // ------------------------------------------
-
         if (currentYear) {
 
           const match = line.match(
@@ -68,32 +96,52 @@ if (activityRecords) {
           );
 
           if (!match) {
+
+            console.warn(
+              "活動記録として認識できません:",
+              line
+            );
+
             return;
+
           }
 
           const month = Number(match[1]);
           const day = Number(match[2]);
           const activityName = match[3];
 
-          const recordItem = document.createElement("div");
-          recordItem.className = "activity-record-item";
+          const recordItem =
+            document.createElement("div");
 
-          const time = document.createElement("time");
+          recordItem.className =
+            "activity-record-item";
 
-          // datetime="2026-08-09" のような形式にする
-          const monthText = String(month).padStart(2, "0");
-          const dayText = String(day).padStart(2, "0");
+          const time =
+            document.createElement("time");
 
-          time.dateTime = `${currentYear}-${monthText}-${dayText}`;
-          time.textContent = `${month}月${day}日`;
+          const monthText =
+            String(month).padStart(2, "0");
 
-          const activity = document.createElement("span");
-          activity.textContent = activityName;
+          const dayText =
+            String(day).padStart(2, "0");
+
+          time.dateTime =
+            `${currentYear}-${monthText}-${dayText}`;
+
+          time.textContent =
+            `${month}月${day}日`;
+
+          const activity =
+            document.createElement("span");
+
+          activity.textContent =
+            activityName;
 
           recordItem.appendChild(time);
           recordItem.appendChild(activity);
 
           currentRecordList.appendChild(recordItem);
+
         }
 
       });
@@ -101,11 +149,19 @@ if (activityRecords) {
     })
 
     .catch(error => {
-      console.error(error);
+
+      console.error(
+        "活動記録読み込みエラー:",
+        error
+      );
 
       activityRecords.innerHTML = `
-        <p>活動記録を読み込めませんでした。</p>
+        <p class="activity-error">
+          活動記録を読み込めませんでした。<br>
+          ${error.message}
+        </p>
       `;
+
     });
 
 }
