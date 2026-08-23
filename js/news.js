@@ -3,26 +3,11 @@
 // NEWS JavaScript
 // ==================================================
 
-
-// ==================================================
-// NEWS SETTINGS
-// ==================================================
-
-// NEWS一覧に表示するファイル
-// 新しい順に記載してください。
-
-const NEWS_FILES = [
-  "2026-08-20.html"
-];
-
-
 // ==================================================
 // NEWS LIST
 // ==================================================
 
-const allNewsList =
-  document.querySelector("#news-all-list");
-
+const allNewsList = document.querySelector("#news-all-list");
 
 // ==================================================
 // LOAD NEWS
@@ -35,154 +20,135 @@ async function loadAllNews() {
     return;
   }
 
-
-  // NEWSが0件の場合
-  if (NEWS_FILES.length === 0) {
-
-    allNewsList.innerHTML = "";
-
-    return;
-
-  }
-
-
   try {
 
-    const newsItems =
-      await Promise.all(
+    // ==================================================
+    // NEWS設定ファイルを読み込む
+    // ==================================================
 
-        NEWS_FILES.map(
-          async (file) => {
+    const response = await fetch("../data/news.txt");
 
-            const url =
-              new URL(
-                file,
-                window.location.href
-              ).href;
-
-
-            console.log(
-              "ニュース読み込み:",
-              url
-            );
-
-
-            const response =
-              await fetch(url);
-
-
-            if (!response.ok) {
-
-              throw new Error(
-                `HTTP ${response.status}: ${url}`
-              );
-
-            }
-
-
-            const html =
-              await response.text();
-
-
-            return {
-              file: file,
-              html: html
-            };
-
-          }
-        )
-
+    if (!response.ok) {
+      throw new Error(
+        "NEWS設定ファイルを読み込めませんでした。"
       );
+    }
 
+    const text = await response.text();
+
+    // ==================================================
+    // [ALL] セクションを取得
+    // ==================================================
+
+    const allSectionMatch = text.match(
+      /\[ALL\]([\s\S]*?)$/
+    );
+
+    if (!allSectionMatch) {
+      throw new Error(
+        "news.txt に [ALL] セクションがありません。"
+      );
+    }
+
+    const newsFiles = allSectionMatch[1]
+      .split(/\r?\n/)
+      .map(line => line.trim())
+      .filter(line => line !== "");
+
+    // NEWSが0件の場合
+    if (newsFiles.length === 0) {
+      allNewsList.innerHTML = "";
+      return;
+    }
+
+    // ==================================================
+    // NEWS HTMLを読み込む
+    // ==================================================
+
+    const newsItems = await Promise.all(
+      newsFiles.map(
+        async (file) => {
+
+          const url = `../news/${file}`;
+
+          console.log(
+            "ニュース読み込み:",
+            url
+          );
+
+          const response = await fetch(url);
+
+          if (!response.ok) {
+            throw new Error(
+              `HTTP ${response.status}: ${url}`
+            );
+          }
+
+          const html = await response.text();
+
+          return {
+            file: file,
+            html: html
+          };
+
+        }
+      )
+    );
 
     // ==================================================
     // HTML生成
     // ==================================================
 
-    allNewsList.innerHTML =
+    allNewsList.innerHTML = newsItems
+      .map(item => {
 
-      newsItems
+        const parser = new DOMParser();
 
-        .map(item => {
+        const document = parser.parseFromString(
+          item.html,
+          "text/html"
+        );
 
-          const parser =
-            new DOMParser();
+        const article = document.querySelector(
+          ".news-data"
+        );
 
+        if (!article) {
+          console.error(
+            `${item.file} に .news-data がありません。`
+          );
+          return "";
+        }
 
-          const document =
-            parser.parseFromString(
-              item.html,
-              "text/html"
-            );
+        const date = article.dataset.date || "";
+        const category = article.dataset.category || "";
+        const title = article.dataset.title || "";
+        const url = article.dataset.url || item.file;
 
-
-          const article =
-            document.querySelector(
-              ".news-data"
-            );
-
-
-          if (!article) {
-
-            console.error(
-              `${item.file} に .news-data がありません。`
-            );
-
-            return "";
-
-          }
-
-
-          const date =
-            article.dataset.date || "";
-
-
-          const category =
-            article.dataset.category || "";
-
-
-          const title =
-            article.dataset.title || "";
-
-
-          const url =
-            article.dataset.url ||
-            item.file;
-
-
-          return `
-
-            <a
-              href="./${url}"
-              class="news-page-item"
+        return `
+          <a
+            href="./${url}"
+            class="news-page-item"
+          >
+            <time
+              datetime="${date.replace(/\./g, "-")}"
             >
+              ${date}
+            </time>
+            <span class="news-page-category">
+              ${category}
+            </span>
+            <span class="news-page-title">
+              ${title}
+            </span>
+            <span class="news-page-arrow">
+              ›
+            </span>
+          </a>
+        `;
 
-              <time
-                datetime="${date.replace(/\./g, "-")}"
-              >
-                ${date}
-              </time>
-
-              <span class="news-page-category">
-                ${category}
-              </span>
-
-              <span class="news-page-title">
-                ${title}
-              </span>
-
-              <span class="news-page-arrow">
-                ›
-              </span>
-
-            </a>
-
-          `;
-
-        })
-
-        .join("");
-
+      })
+      .join("");
 
   } catch (error) {
 
@@ -191,19 +157,15 @@ async function loadAllNews() {
       error
     );
 
-
     allNewsList.innerHTML = `
-
       <p class="news-error">
         お知らせを読み込めませんでした。
       </p>
-
     `;
 
   }
 
 }
-
 
 // ==================================================
 // START

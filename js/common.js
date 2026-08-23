@@ -4,24 +4,6 @@
 // ==================================================
 
 // ==================================================
-// SETTINGS
-// ==================================================
-
-
-// ==================================================
-// TOP NEWS
-// ==================================================
-
-// トップページに表示するNEWSファイル
-// 新しいNEWSを追加したら、ここにファイル名を追加してください。
-// 上から新しい順に記載します。
-
-const TOP_NEWS_FILES = [
-  "2026-08-20.html"
-];
-
-
-// ==================================================
 // SLIDESHOW
 // ==================================================
 
@@ -38,9 +20,7 @@ const SLIDESHOW_IMAGE_PATHS = [
 
 
 // 自動スライドの切り替え時間
-
 const SLIDESHOW_INTERVAL = 5000;
-
 
 // ==================================================
 // MOBILE MENU
@@ -93,26 +73,78 @@ async function loadTopNews() {
   }
 
 
-  // NEWSが0件の場合
-  if (TOP_NEWS_FILES.length === 0) {
-
-    topNewsList.innerHTML = "";
-
-    return;
-
-  }
-
-
   try {
+
+    // ==================================================
+    // NEWS設定ファイルを読み込む
+    // ==================================================
+
+    const response =
+      await fetch("data/news.txt");
+
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        "NEWS設定ファイルを読み込めませんでした。"
+      );
+
+    }
+
+    const text =
+      await response.text();
+
+
+    // ==================================================
+    // [TOP] セクションを取得
+    // ==================================================
+
+    const topSectionMatch =
+      text.match(
+        /\[TOP\]([\s\S]*?)(?=\[ALL\]|$)/
+      );
+
+    if (!topSectionMatch) {
+
+      throw new Error(
+        "news.txt に [TOP] セクションがありません。"
+      );
+
+    }
+
+    const newsFiles =
+      topSectionMatch[1]
+
+        .split(/\r?\n/)
+
+        .map(line => line.trim())
+
+        .filter(line => line !== "");
+
+
+
+    // NEWSが0件の場合
+    if (newsFiles.length === 0) {
+
+      topNewsList.innerHTML = "";
+
+      return;
+
+    }
+
+
+
+    // ==================================================
+    // NEWS HTMLを読み込む
+    // ==================================================
 
     const newsItems =
       await Promise.all(
 
-        TOP_NEWS_FILES.map(
+        newsFiles.map(
           async (file) => {
 
-            // トップページから
-            // /news/ 内のHTMLを読み込む
             const response =
               await fetch(
                 `news/${file}`
@@ -194,8 +226,7 @@ async function loadTopNews() {
               article.dataset.title || "";
 
 
-            // トップページから
-            // NEWS記事ページへ移動
+            // NEWS記事ページへのリンク
             const url =
               `news/${item.file}`;
 
