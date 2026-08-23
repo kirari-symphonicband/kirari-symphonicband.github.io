@@ -33,6 +33,10 @@ const globalNav =
   document.querySelector(".global-nav");
 
 
+// ==================================================
+// MENU BUTTON
+// ==================================================
+
 if (menuButton && globalNav) {
 
   menuButton.addEventListener(
@@ -53,8 +57,33 @@ if (menuButton && globalNav) {
     }
   );
 
-}
+  // ==================================================
+  // MENU LINK
+  // メニュー内のリンクを押したら自動的に閉じる
+  // ==================================================
 
+  globalNav
+    .querySelectorAll("a")
+    .forEach((link) => {
+
+      link.addEventListener(
+        "click",
+        () => {
+
+          globalNav.classList.remove(
+            "is-open"
+          );
+
+          menuButton.setAttribute(
+            "aria-expanded",
+            "false"
+          );
+
+        }
+      );
+
+    });
+}
 
 // ==================================================
 // TOP NEWS
