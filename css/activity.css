@@ -25,26 +25,6 @@ PAGE
     min-height: 80px;
 }
 
-.activity-page .site-name img {
-    width: 150px;
-}
-
-@media (max-width: 700px) {
-
-    .activity-page .header-inner {
-        min-height: 65px;
-    }
-
-    .activity-page .site-name {
-        width: 90px;
-        max-width: 90px;
-    }
-
-    .activity-page .site-name img {
-        width: 90px;
-    }
-
-}
 
 /* ==================================================
 ACTIVITY RECORDS
