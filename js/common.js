@@ -815,3 +815,81 @@ document
 
     }
   );
+
+
+// ==================================================
+// MEMBER
+// 募集パートを外部ファイルから読み込み
+// ==================================================
+
+const memberParts =
+  document.querySelector("#member-parts");
+
+
+async function loadMemberParts() {
+
+  if (!memberParts) {
+    return;
+  }
+
+
+  try {
+
+    const response =
+      await fetch("data/member.txt");
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        "member.txt を読み込めませんでした。"
+      );
+
+    }
+
+
+    const text =
+      await response.text();
+
+
+    const match =
+      text.match(
+        /\[PARTS\]([\s\S]*?)(?=\[|$)/
+      );
+
+
+    if (!match) {
+
+      console.error(
+        "member.txt に [PARTS] がありません。"
+      );
+
+      return;
+
+    }
+
+
+    const parts =
+      match[1]
+        .split(/\r?\n/)
+        .map(line => line.trim())
+        .filter(line => line !== "");
+
+
+    memberParts.innerHTML =
+      parts.join("<br>");
+
+
+  } catch (error) {
+
+    console.error(
+      "募集パート読み込みエラー:",
+      error
+    );
+
+  }
+
+}
+
+
+loadMemberParts();
