@@ -826,23 +826,39 @@ const memberParts =
   document.querySelector("#member-parts");
 
 
+// ==================================================
+// MEMBER SETTINGS
+// 今後変更する場合はここを編集
+// ==================================================
+
+const MEMBER_DATA_PATH =
+  "data/member.txt";
+
+
+// ==================================================
+// LOAD MEMBER PARTS
+// ==================================================
+
 async function loadMemberParts() {
 
+  // 団員募集ページがない場合は何もしない
   if (!memberParts) {
+
     return;
+
   }
 
 
   try {
 
     const response =
-      await fetch("data/member.txt");
+      await fetch(MEMBER_DATA_PATH);
 
 
     if (!response.ok) {
 
       throw new Error(
-        "member.txt を読み込めませんでした。"
+        `member.txt を読み込めませんでした: ${response.status}`
       );
 
     }
@@ -852,6 +868,10 @@ async function loadMemberParts() {
       await response.text();
 
 
+    // ==================================================
+    // [PARTS] セクションを取得
+    // ==================================================
+
     const match =
       text.match(
         /\[PARTS\]([\s\S]*?)(?=\[|$)/
@@ -860,24 +880,36 @@ async function loadMemberParts() {
 
     if (!match) {
 
-      console.error(
-        "member.txt に [PARTS] がありません。"
+      throw new Error(
+        "member.txt に [PARTS] セクションがありません。"
       );
-
-      return;
 
     }
 
+
+    // ==================================================
+    // 募集パートを取得
+    // 空行とコメント行は無視
+    // ==================================================
 
     const parts =
       match[1]
         .split(/\r?\n/)
         .map(line => line.trim())
-        .filter(line => line !== "");
+        .filter(line =>
+          line !== "" &&
+          !line.startsWith("#")
+        );
 
+
+    // ==================================================
+    // HTML生成
+    // ==================================================
 
     memberParts.innerHTML =
-      parts.join("<br>");
+      parts
+        .map(part => escapeHTML(part))
+        .join("<br>");
 
 
   } catch (error) {
@@ -891,6 +923,10 @@ async function loadMemberParts() {
 
 }
 
+
+// ==================================================
+// MEMBER START
+// ==================================================
 
 loadMemberParts();
 
@@ -929,10 +965,6 @@ async function loadConcert() {
 
   try {
 
-    // ==================================================
-    // concert.txt 読み込み
-    // ==================================================
-
     const response =
       await fetch(CONCERT_DATA_PATH);
 
@@ -950,18 +982,11 @@ async function loadConcert() {
       await response.text();
 
 
-    // ==================================================
-    // CONCERT DATA PARSE
-    // ==================================================
-
     const concerts =
       parseConcertData(text);
 
 
-    // ==================================================
     // 演奏会が0件の場合
-    // ==================================================
-
     if (concerts.length === 0) {
 
       concertList.innerHTML = "";
@@ -971,14 +996,11 @@ async function loadConcert() {
     }
 
 
-    // ==================================================
     // HTML生成
-    // ==================================================
-
     concertList.innerHTML =
       concerts
         .map(
-          (concert) =>
+          concert =>
             createConcertHTML(concert)
         )
         .join("");
@@ -1047,12 +1069,8 @@ function parseConcertData(text) {
   const blocks =
     concertText
       .split(/\r?\n---\r?\n/)
-      .map(
-        block => block.trim()
-      )
-      .filter(
-        block => block !== ""
-      );
+      .map(block => block.trim())
+      .filter(block => block !== "");
 
 
   // ==================================================
@@ -1060,7 +1078,7 @@ function parseConcertData(text) {
   // ==================================================
 
   blocks.forEach(
-    (block) => {
+    block => {
 
       const lines =
         block.split(/\r?\n/);
@@ -1081,13 +1099,13 @@ function parseConcertData(text) {
 
 
       lines.forEach(
-        (line) => {
+        line => {
 
           const trimmed =
             line.trim();
 
 
-          // 空行
+          // 空行は無視
           if (!trimmed) {
 
             return;
@@ -1095,7 +1113,24 @@ function parseConcertData(text) {
           }
 
 
+          // ==================================================
+          // コメント行は無視
+          // 「#」から始まる行
+          // ==================================================
+
+          if (
+            trimmed.startsWith("#")
+          ) {
+
+            return;
+
+          }
+
+
+          // ==================================================
           // [DETAIL]
+          // ==================================================
+
           if (
             trimmed === "[DETAIL]"
           ) {
@@ -1134,39 +1169,28 @@ function parseConcertData(text) {
               match[2].trim();
 
 
-            if (
-              key === "year"
-            ) {
+            if (key === "year") {
 
               concert.year =
                 value;
 
             }
 
-
-            else if (
-              key === "date"
-            ) {
+            else if (key === "date") {
 
               concert.date =
                 value;
 
             }
 
-
-            else if (
-              key === "label"
-            ) {
+            else if (key === "label") {
 
               concert.label =
                 value;
 
             }
 
-
-            else if (
-              key === "title"
-            ) {
+            else if (key === "title") {
 
               concert.title =
                 value;
@@ -1231,14 +1255,10 @@ function createConcertHTML(
   concert
 ) {
 
-  // ==================================================
-  // 詳細項目
-  // ==================================================
-
   const detailsHTML =
     concert.details
       .map(
-        (detail) => {
+        detail => {
 
           return `
 
@@ -1246,13 +1266,13 @@ function createConcertHTML(
 
               <span>
                 ${escapeHTML(
-                  detail.label
-                )}
+            detail.label
+          )}
               </span>
 
               ${formatConcertValue(
-                detail.value
-              )}
+            detail.value
+          )}
 
             </p>
 
@@ -1263,10 +1283,6 @@ function createConcertHTML(
       .join("");
 
 
-  // ==================================================
-  // 演奏会HTML
-  // ==================================================
-
   return `
 
     <article class="concert-card">
@@ -1275,14 +1291,14 @@ function createConcertHTML(
 
         <span>
           ${escapeHTML(
-            concert.year
-          )}
+    concert.year
+  )}
         </span>
 
         <strong>
           ${escapeHTML(
-            concert.date
-          )}
+    concert.date
+  )}
         </strong>
 
       </div>
@@ -1290,43 +1306,40 @@ function createConcertHTML(
 
       <div class="concert-content">
 
-        ${
-          concert.label
-            ? `
+        ${concert.label
+      ? `
               <p class="concert-label">
                 ${escapeHTML(
-                  concert.label
-                )}
+        concert.label
+      )}
               </p>
             `
-            : ""
-        }
+      : ""
+    }
 
 
-        ${
-          concert.title
-            ? `
+        ${concert.title
+      ? `
               <h3>
                 ${escapeHTML(
-                  concert.title
-                )}
+        concert.title
+      )}
               </h3>
             `
-            : ""
-        }
+      : ""
+    }
 
 
-        ${
-          concert.details.length > 0
-            ? `
+        ${concert.details.length > 0
+      ? `
               <div class="concert-details">
 
                 ${detailsHTML}
 
               </div>
             `
-            : ""
-        }
+      : ""
+    }
 
       </div>
 
@@ -1339,7 +1352,6 @@ function createConcertHTML(
 
 // ==================================================
 // CONCERT VALUE
-// 改行を含む場合にも対応
 // ==================================================
 
 function formatConcertValue(
@@ -1358,7 +1370,6 @@ function formatConcertValue(
 
 // ==================================================
 // HTML ESCAPE
-// concert.txt の内容を安全に表示
 // ==================================================
 
 function escapeHTML(
@@ -1366,26 +1377,11 @@ function escapeHTML(
 ) {
 
   return String(value)
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-    .replace(
-      /</g,
-      "&lt;"
-    )
-    .replace(
-      />/g,
-      "&gt;"
-    )
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-    .replace(
-      /'/g,
-      "&#039;"
-    );
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 
 }
 
