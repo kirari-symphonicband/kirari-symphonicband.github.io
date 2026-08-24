@@ -874,7 +874,7 @@ async function loadMemberParts() {
 
     const match =
       text.match(
-        /\[PARTS\]([\s\S]*?)(?=\r?\n\[|$)/
+        /^\[PARTS\]\s*([\s\S]*?)(?=^\[[A-Z]+\]\s*$|$)/m
       );
 
     if (!match) {
