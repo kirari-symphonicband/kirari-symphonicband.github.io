@@ -741,6 +741,8 @@ button {
 
   grid-template-columns: 60px 1fr;
 
+  align-items: start;
+
   margin: 8px 0;
 
   color: var(--text-light);
