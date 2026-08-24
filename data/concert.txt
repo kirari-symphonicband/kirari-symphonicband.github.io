@@ -1,0 +1,27 @@
+[CONCERT]
+
+---
+
+year=2027
+date=4/24(土)
+label=KIRARISM CONCERT
+title=キラリズム vol.3
+
+[DETAIL]
+会場=広島駅南口地下広場（エールエールA館前）
+開場=未定
+開演=未定
+入場料=無料
+
+---
+
+year=2027
+date=6/5(土)
+label=REGULAR CONCERT
+title=第１回 定期演奏会
+
+[DETAIL]
+会場=安佐南区民文化センター
+開場=未定
+開演=未定
+

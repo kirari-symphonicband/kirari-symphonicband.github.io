@@ -893,3 +893,505 @@ async function loadMemberParts() {
 
 
 loadMemberParts();
+
+
+// ==================================================
+// CONCERT
+// 演奏会情報を concert.txt から読み込んで表示
+// ==================================================
+
+const concertList =
+  document.querySelector("#concert-list");
+
+
+// ==================================================
+// CONCERT SETTINGS
+// 今後変更する場合はここを編集
+// ==================================================
+
+const CONCERT_DATA_PATH =
+  "data/concert.txt";
+
+
+// ==================================================
+// LOAD CONCERT
+// ==================================================
+
+async function loadConcert() {
+
+  // 演奏会情報がないページでは何もしない
+  if (!concertList) {
+
+    return;
+
+  }
+
+
+  try {
+
+    // ==================================================
+    // concert.txt 読み込み
+    // ==================================================
+
+    const response =
+      await fetch(CONCERT_DATA_PATH);
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        `演奏会設定ファイルを読み込めませんでした: ${response.status}`
+      );
+
+    }
+
+
+    const text =
+      await response.text();
+
+
+    // ==================================================
+    // CONCERT DATA PARSE
+    // ==================================================
+
+    const concerts =
+      parseConcertData(text);
+
+
+    // ==================================================
+    // 演奏会が0件の場合
+    // ==================================================
+
+    if (concerts.length === 0) {
+
+      concertList.innerHTML = "";
+
+      return;
+
+    }
+
+
+    // ==================================================
+    // HTML生成
+    // ==================================================
+
+    concertList.innerHTML =
+      concerts
+        .map(
+          (concert) =>
+            createConcertHTML(concert)
+        )
+        .join("");
+
+
+  } catch (error) {
+
+    console.error(
+      "演奏会情報読み込みエラー:",
+      error
+    );
+
+
+    concertList.innerHTML = `
+
+      <p class="concert-error">
+        演奏会情報を読み込めませんでした。
+      </p>
+
+    `;
+
+  }
+
+}
+
+
+// ==================================================
+// PARSE CONCERT DATA
+// concert.txt をデータ化
+// ==================================================
+
+function parseConcertData(text) {
+
+  const concerts = [];
+
+
+  // ==================================================
+  // [CONCERT] セクション取得
+  // ==================================================
+
+  const concertSectionMatch =
+    text.match(
+      /\[CONCERT\]([\s\S]*)/
+    );
+
+
+  if (!concertSectionMatch) {
+
+    console.error(
+      "concert.txt に [CONCERT] セクションがありません。"
+    );
+
+    return concerts;
+
+  }
+
+
+  const concertText =
+    concertSectionMatch[1];
+
+
+  // ==================================================
+  // 「---」で演奏会を分割
+  // ==================================================
+
+  const blocks =
+    concertText
+      .split(/\r?\n---\r?\n/)
+      .map(
+        block => block.trim()
+      )
+      .filter(
+        block => block !== ""
+      );
+
+
+  // ==================================================
+  // 各演奏会を解析
+  // ==================================================
+
+  blocks.forEach(
+    (block) => {
+
+      const lines =
+        block.split(/\r?\n/);
+
+
+      const concert = {
+
+        year: "",
+        date: "",
+        label: "",
+        title: "",
+        details: []
+
+      };
+
+
+      let detailMode = false;
+
+
+      lines.forEach(
+        (line) => {
+
+          const trimmed =
+            line.trim();
+
+
+          // 空行
+          if (!trimmed) {
+
+            return;
+
+          }
+
+
+          // [DETAIL]
+          if (
+            trimmed === "[DETAIL]"
+          ) {
+
+            detailMode = true;
+
+            return;
+
+          }
+
+
+          // ==================================================
+          // 基本情報
+          // ==================================================
+
+          if (!detailMode) {
+
+            const match =
+              trimmed.match(
+                /^([^=]+)=(.*)$/
+              );
+
+
+            if (!match) {
+
+              return;
+
+            }
+
+
+            const key =
+              match[1].trim();
+
+
+            const value =
+              match[2].trim();
+
+
+            if (
+              key === "year"
+            ) {
+
+              concert.year =
+                value;
+
+            }
+
+
+            else if (
+              key === "date"
+            ) {
+
+              concert.date =
+                value;
+
+            }
+
+
+            else if (
+              key === "label"
+            ) {
+
+              concert.label =
+                value;
+
+            }
+
+
+            else if (
+              key === "title"
+            ) {
+
+              concert.title =
+                value;
+
+            }
+
+
+            return;
+
+          }
+
+
+          // ==================================================
+          // 詳細情報
+          // ==================================================
+
+          const detailMatch =
+            trimmed.match(
+              /^([^=]+)=(.*)$/
+            );
+
+
+          if (!detailMatch) {
+
+            return;
+
+          }
+
+
+          concert.details.push({
+
+            label:
+              detailMatch[1].trim(),
+
+            value:
+              detailMatch[2].trim()
+
+          });
+
+        }
+      );
+
+
+      concerts.push(
+        concert
+      );
+
+    }
+  );
+
+
+  return concerts;
+
+}
+
+
+// ==================================================
+// CREATE CONCERT HTML
+// ==================================================
+
+function createConcertHTML(
+  concert
+) {
+
+  // ==================================================
+  // 詳細項目
+  // ==================================================
+
+  const detailsHTML =
+    concert.details
+      .map(
+        (detail) => {
+
+          return `
+
+            <p>
+
+              <span>
+                ${escapeHTML(
+                  detail.label
+                )}
+              </span>
+
+              ${formatConcertValue(
+                detail.value
+              )}
+
+            </p>
+
+          `;
+
+        }
+      )
+      .join("");
+
+
+  // ==================================================
+  // 演奏会HTML
+  // ==================================================
+
+  return `
+
+    <article class="concert-card">
+
+      <div class="concert-date">
+
+        <span>
+          ${escapeHTML(
+            concert.year
+          )}
+        </span>
+
+        <strong>
+          ${escapeHTML(
+            concert.date
+          )}
+        </strong>
+
+      </div>
+
+
+      <div class="concert-content">
+
+        ${
+          concert.label
+            ? `
+              <p class="concert-label">
+                ${escapeHTML(
+                  concert.label
+                )}
+              </p>
+            `
+            : ""
+        }
+
+
+        ${
+          concert.title
+            ? `
+              <h3>
+                ${escapeHTML(
+                  concert.title
+                )}
+              </h3>
+            `
+            : ""
+        }
+
+
+        ${
+          concert.details.length > 0
+            ? `
+              <div class="concert-details">
+
+                ${detailsHTML}
+
+              </div>
+            `
+            : ""
+        }
+
+      </div>
+
+    </article>
+
+  `;
+
+}
+
+
+// ==================================================
+// CONCERT VALUE
+// 改行を含む場合にも対応
+// ==================================================
+
+function formatConcertValue(
+  value
+) {
+
+  return escapeHTML(
+    value
+  ).replace(
+    /\r?\n/g,
+    "<br>"
+  );
+
+}
+
+
+// ==================================================
+// HTML ESCAPE
+// concert.txt の内容を安全に表示
+// ==================================================
+
+function escapeHTML(
+  value
+) {
+
+  return String(value)
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+// ==================================================
+// CONCERT START
+// ==================================================
+
+loadConcert();
