@@ -1272,16 +1272,7 @@ function createConcertHTML(
         detail => {
 
           return `
-
-          <p>
-            <span>
-              ${escapeHTML(detail.label)}
-            </span>
-
-            <span class="concert-detail-value">
-              ${formatConcertValue(detail.value)}
-            </span>
-          </p>
+            <p><span>${escapeHTML(detail.label)}</span><span class="concert-detail-value">${formatConcertValue(detail.value)}</span></p>
         `;
 
         }
