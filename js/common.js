@@ -874,7 +874,7 @@ async function loadMemberParts() {
 
     const match =
       text.match(
-        /^\[PARTS\]\s*([\s\S]*?)(?=^\[[A-Z]+\]\s*$|$)/m
+        /^[ \t]*\[PARTS\][ \t]*\r?\n([\s\S]*?)(?=^[ \t]*\[[A-Z]+\][ \t]*$|(?![\s\S]))/m
       );
 
     if (!match) {
@@ -1274,21 +1274,14 @@ function createConcertHTML(
           return `
 
           <p>
-
-            <span class="concert-detail-label">
-              ${escapeHTML(
-            detail.label
-          )}
+            <span>
+              ${escapeHTML(detail.label)}
             </span>
 
             <span class="concert-detail-value">
-              ${formatConcertValue(
-            detail.value
-          )}
+              ${formatConcertValue(detail.value)}
             </span>
-
           </p>
-
         `;
 
         }
@@ -1373,9 +1366,6 @@ function formatConcertValue(
 
   return escapeHTML(
     value
-  ).replace(
-    /\r?\n/g,
-    "<br>"
   );
 
 }
