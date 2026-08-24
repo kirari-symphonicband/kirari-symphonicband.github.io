@@ -1212,22 +1212,34 @@ function parseConcertData(text) {
             );
 
 
-          if (!detailMatch) {
+          // 「項目名=内容」の形式の場合
+          if (detailMatch) {
+
+            concert.details.push({
+
+              label:
+                detailMatch[1].trim(),
+
+              value:
+                detailMatch[2].trim()
+
+            });
 
             return;
 
           }
 
+          // 「=」がない行は、直前の内容の続きとして扱う
+          if (
+            concert.details.length > 0
+          ) {
 
-          concert.details.push({
+            concert.details[
+              concert.details.length - 1
+            ].value +=
+              "\n" + trimmed;
 
-            label:
-              detailMatch[1].trim(),
-
-            value:
-              detailMatch[2].trim()
-
-          });
+          }
 
         }
       );
@@ -1261,21 +1273,23 @@ function createConcertHTML(
 
           return `
 
-            <p>
+          <p>
 
-              <span>
-                ${escapeHTML(
+            <span class="concert-detail-label">
+              ${escapeHTML(
             detail.label
           )}
-              </span>
+            </span>
 
+            <span class="concert-detail-value">
               ${formatConcertValue(
             detail.value
           )}
+            </span>
 
-            </p>
+          </p>
 
-          `;
+        `;
 
         }
       )

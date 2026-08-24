@@ -737,6 +737,10 @@ button {
 }
 
 .concert-details p {
+  display: grid;
+
+  grid-template-columns: 60px 1fr;
+
   margin: 8px 0;
 
   color: var(--text-light);
@@ -744,14 +748,14 @@ button {
   font-size: 14px;
 }
 
-.concert-details span {
-  display: inline-block;
-
-  width: 60px;
-
+.concert-details > p > span:first-child {
   color: var(--text);
 
   font-weight: 700;
+}
+
+.concert-detail-value {
+  white-space: pre-line;
 }
 
 .detail-space {
