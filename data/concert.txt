@@ -17,8 +17,6 @@
 
 [CONCERT]
 
----
-
 year=2027
 date=4/24(土)
 label=KIRARISM CONCERT
