@@ -230,12 +230,10 @@ button {
   color: var(--white);
 
   background:
-    radial-gradient(
-      circle at 50% 40%,
+    radial-gradient(circle at 50% 40%,
       #0c3268 0%,
       var(--navy) 60%,
-      #03142f 100%
-    );
+      #03142f 100%);
 }
 
 .hero::after {
@@ -580,11 +578,9 @@ button {
   overflow: hidden;
 
   background:
-    linear-gradient(
-      135deg,
+    linear-gradient(135deg,
       #d9dee7,
-      #b9c2cf
-    );
+      #b9c2cf);
 
   color: #667085;
 
@@ -643,7 +639,7 @@ button {
   letter-spacing: .05em;
 }
 
-.conductor-content > p:last-child {
+.conductor-content>p:last-child {
   margin: 0;
 
   color: var(--text-light);
@@ -653,7 +649,7 @@ button {
   line-height: 2;
 }
 
-.conductor-content > p:last-child strong {
+.conductor-content>p:last-child strong {
   color: var(--navy);
 
   font-weight: 700;
@@ -750,7 +746,7 @@ button {
   font-size: 14px;
 }
 
-.concert-details > p > span:first-child {
+.concert-details>p>span:first-child {
   color: var(--text);
 
   font-weight: 700;
@@ -827,11 +823,9 @@ button {
   justify-content: center;
 
   background:
-    linear-gradient(
-      135deg,
+    linear-gradient(135deg,
       #d9dee7,
-      #b9c2cf
-    );
+      #b9c2cf);
 
   color: #667085;
 
@@ -922,7 +916,7 @@ button {
   background: var(--white);
 }
 
-.member-box > h3 {
+.member-box>h3 {
   margin: 0;
 
   padding: 18px 25px;
@@ -977,11 +971,9 @@ button {
   padding: 40px 30px;
 
   background:
-    linear-gradient(
-      135deg,
+    linear-gradient(135deg,
       var(--navy),
-      var(--navy-light)
-    );
+      var(--navy-light));
 
   color: var(--white);
 
@@ -1005,7 +997,7 @@ button {
   font-size: 25px;
 }
 
-.member-visit > p:not(.member-visit-label) {
+.member-visit>p:not(.member-visit-label) {
   margin: 0 0 25px;
 
   color: rgba(255, 255, 255, .8);
@@ -1080,11 +1072,9 @@ button {
   padding: 50px 0;
 
   background:
-    linear-gradient(
-      135deg,
+    linear-gradient(135deg,
       var(--navy),
-      var(--navy-light)
-    );
+      var(--navy-light));
 
   color: var(--white);
 
@@ -1101,7 +1091,7 @@ button {
   font-size: 36px;
 }
 
-.contact-inner > p {
+.contact-inner>p {
   margin: 0 0 22px;
 
   color: rgba(255, 255, 255, .8);
@@ -1493,7 +1483,7 @@ button {
     font-size: 13px;
   }
 
-  .conductor-content > p:last-child {
+  .conductor-content>p:last-child {
     font-size: 13px;
 
     line-height: 1.9;
@@ -1580,7 +1570,7 @@ button {
     line-height: 1.7;
   }
 
-  .member-box > h3 {
+  .member-box>h3 {
     padding: 15px 18px;
 
     font-size: 17px;
@@ -1594,8 +1584,12 @@ button {
     font-size: 23px;
   }
 
-  .member-visit > p:not(.member-visit-label) {
+  .member-visit>p:not(.member-visit-label) {
     font-size: 13px;
+  }
+
+  .member-buttons .member-button {
+    width: 80%;
   }
 
   .member-button {
@@ -1621,7 +1615,7 @@ button {
     font-size: 28px;
   }
 
-  .contact-inner > p {
+  .contact-inner>p {
     margin-bottom: 20px;
 
     font-size: 13px;
@@ -2066,11 +2060,9 @@ button {
   justify-content: center;
 
   background:
-    linear-gradient(
-      135deg,
+    linear-gradient(135deg,
       #d9dee7,
-      #b9c2cf
-    );
+      #b9c2cf);
 
   color: #667085;
 
