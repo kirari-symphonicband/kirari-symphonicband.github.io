@@ -1051,6 +1051,26 @@ button {
   color: var(--navy);
 }
 
+/* ====================
+   MEMBER BUTTONS
+==================== */
+
+.member-buttons {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 12px;
+
+  width: 100%;
+}
+
+.member-buttons .member-button {
+  width: 100%;
+}
+
 
 /* ==================================================
    CONTACT
