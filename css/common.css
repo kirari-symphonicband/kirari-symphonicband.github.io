@@ -263,7 +263,7 @@ button {
 }
 
 .hero-kicker {
-  margin: 0 0 16px;
+  margin: 0 0 30px;
 
   color: var(--gold);
 
@@ -1323,7 +1323,7 @@ button {
   }
 
   .hero-kicker {
-    margin-bottom: 8px;
+    margin-bottom: 18px;
 
     font-size: 9px;
 
