@@ -17,6 +17,19 @@
 
 [CONCERT]
 
+year=2026
+date=9/21(月)
+label=BAND FESTIVAL
+title=市民バンドフェスティバル
+
+[DETAIL]
+会場=広島文化学園HBGホール
+開場=12:00
+開演=12:30
+入場料=無料
+
+---
+
 year=2027
 date=4/24(土)
 label=KIRARISM CONCERT
@@ -33,7 +46,7 @@ title=キラリズム vol.3
 year=2027
 date=6/5(土)
 label=REGULAR CONCERT
-title=第１回 定期演奏会
+title=第1回 定期演奏会
 
 [DETAIL]
 会場=安佐南区民文化センター
