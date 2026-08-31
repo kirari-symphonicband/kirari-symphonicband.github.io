@@ -2299,7 +2299,7 @@ button {
 
   min-height: 70px;
 
-  padding: 15px 10px;
+  padding: 15px 20px;
 
   cursor: pointer;
 
@@ -2391,8 +2391,7 @@ button {
 
   gap: 15px;
 
-  padding:
-    5px 45px 25px 10px;
+  padding: 15px 20px;
 
   color: var(--text-light);
 
@@ -2465,7 +2464,7 @@ button {
 
     min-height: 65px;
 
-    padding: 13px 5px;
+    padding: 13px 10px;
 
     font-size: 13px;
   }
@@ -2495,8 +2494,7 @@ button {
 
     gap: 10px;
 
-    padding:
-      3px 30px 20px 5px;
+    padding: 13px 10px;
 
     font-size: 13px;
 
