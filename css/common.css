@@ -1816,7 +1816,7 @@ button {
 ================================================== */
 
 .instagram-section {
-  background: var(--gray);
+  background: var(--white);
 }
 
 .instagram-intro {
@@ -2254,6 +2254,261 @@ button {
 
   .top-header .header-inner {
     justify-content: flex-end;
+  }
+
+}
+
+/* ==================================================
+   FAQ
+================================================== */
+
+.faq-section {
+  background: var(--gray);
+}
+
+
+.faq-list {
+  max-width: 850px;
+
+  margin: 0 auto;
+
+  border-top: 1px solid var(--border);
+}
+
+
+.faq-item {
+  border-bottom: 1px solid var(--border);
+
+  background: var(--white);
+}
+
+
+/* ====================
+   FAQ QUESTION
+==================== */
+
+.faq-question {
+  display: grid;
+
+  grid-template-columns:
+    35px 1fr 30px;
+
+  align-items: center;
+
+  gap: 15px;
+
+  min-height: 70px;
+
+  padding: 15px 10px;
+
+  cursor: pointer;
+
+  list-style: none;
+
+  color: var(--navy);
+
+  font-size: 15px;
+
+  font-weight: 700;
+}
+
+
+/* Safari等の標準マーカーを消す */
+
+.faq-question::-webkit-details-marker {
+  display: none;
+}
+
+
+.faq-q {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 28px;
+  height: 28px;
+
+  border-radius: 50%;
+
+  background: var(--navy);
+
+  color: var(--white);
+
+  font-size: 12px;
+
+  font-weight: 800;
+}
+
+
+.faq-question-text {
+  line-height: 1.7;
+}
+
+
+.faq-arrow {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  color: var(--navy);
+
+  font-size: 27px;
+
+  line-height: 1;
+
+  transform: rotate(90deg);
+
+  transition:
+    transform .25s ease;
+}
+
+
+/* ====================
+   OPEN
+==================== */
+
+.faq-item[open] .faq-arrow {
+  transform: rotate(-90deg);
+}
+
+
+.faq-item[open] .faq-question {
+  background: #f8fafc;
+}
+
+
+/* ====================
+   FAQ ANSWER
+==================== */
+
+.faq-answer {
+  display: grid;
+
+  grid-template-columns:
+    35px 1fr;
+
+  gap: 15px;
+
+  padding:
+    5px 45px 25px 10px;
+
+  color: var(--text-light);
+
+  font-size: 14px;
+
+  line-height: 1.9;
+}
+
+
+.faq-a {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 28px;
+  height: 28px;
+
+  border-radius: 50%;
+
+  background: var(--gold);
+
+  color: var(--navy);
+
+  font-size: 12px;
+
+  font-weight: 800;
+}
+
+
+.faq-answer p {
+  margin: 0;
+}
+
+
+/* ====================
+   FAQ ERROR / LOADING
+==================== */
+
+.faq-loading,
+.faq-error {
+  margin: 0;
+
+  padding: 25px;
+
+  color: var(--text-light);
+
+  font-size: 14px;
+
+  text-align: center;
+}
+
+
+/* ==================================================
+   FAQ MOBILE
+================================================== */
+
+@media (max-width: 700px) {
+
+  .faq-list {
+    width: 100%;
+  }
+
+
+  .faq-question {
+    grid-template-columns:
+      30px 1fr 24px;
+
+    gap: 10px;
+
+    min-height: 65px;
+
+    padding: 13px 5px;
+
+    font-size: 13px;
+  }
+
+
+  .faq-q {
+    width: 25px;
+    height: 25px;
+
+    font-size: 11px;
+  }
+
+
+  .faq-question-text {
+    line-height: 1.7;
+  }
+
+
+  .faq-arrow {
+    font-size: 23px;
+  }
+
+
+  .faq-answer {
+    grid-template-columns:
+      30px 1fr;
+
+    gap: 10px;
+
+    padding:
+      3px 30px 20px 5px;
+
+    font-size: 13px;
+
+    line-height: 1.8;
+  }
+
+
+  .faq-a {
+    width: 25px;
+    height: 25px;
+
+    font-size: 11px;
   }
 
 }

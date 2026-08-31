@@ -1385,3 +1385,345 @@ function escapeHTML(
 // ==================================================
 
 loadConcert();
+
+// ==================================================
+// FAQ
+// よくある質問を faq.txt から読み込んで表示
+// ==================================================
+
+const faqList =
+  document.querySelector("#faq-list");
+
+
+// ==================================================
+// FAQ SETTINGS
+// 今後変更する場合はここを編集
+// ==================================================
+
+const FAQ_DATA_PATH =
+  "data/faq.txt";
+
+
+// ==================================================
+// LOAD FAQ
+// ==================================================
+
+async function loadFAQ() {
+
+  // FAQがないページでは何もしない
+  if (!faqList) {
+
+    return;
+
+  }
+
+
+  try {
+
+    const response =
+      await fetch(FAQ_DATA_PATH);
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        `faq.txt を読み込めませんでした: ${response.status}`
+      );
+
+    }
+
+
+    const text =
+      await response.text();
+
+
+    const faqs =
+      parseFAQData(text);
+
+
+    // FAQが0件の場合
+    if (faqs.length === 0) {
+
+      faqList.innerHTML = "";
+
+      return;
+
+    }
+
+
+    // ==================================================
+    // HTML生成
+    // ==================================================
+
+    faqList.innerHTML =
+      faqs
+        .map(
+          (faq, index) =>
+            createFAQHTML(
+              faq,
+              index
+            )
+        )
+        .join("");
+
+
+  } catch (error) {
+
+    console.error(
+      "FAQ読み込みエラー:",
+      error
+    );
+
+
+    faqList.innerHTML = `
+
+      <p class="faq-error">
+        よくある質問を読み込めませんでした。
+      </p>
+
+    `;
+
+  }
+
+}
+
+
+// ==================================================
+// PARSE FAQ DATA
+// faq.txt をデータ化
+// ==================================================
+
+function parseFAQData(text) {
+
+  const faqs = [];
+
+
+  // ==================================================
+  // [FAQ] セクション取得
+  // ==================================================
+
+  const faqSectionMatch =
+    text.match(
+      /\[FAQ\]([\s\S]*)/
+    );
+
+
+  if (!faqSectionMatch) {
+
+    console.error(
+      "faq.txt に [FAQ] セクションがありません。"
+    );
+
+    return faqs;
+
+  }
+
+
+  const faqText =
+    faqSectionMatch[1];
+
+
+  // ==================================================
+  // 「---」でFAQを分割
+  // ==================================================
+
+  const blocks =
+    faqText
+      .split(/\r?\n---\r?\n/)
+      .map(
+        block => block.trim()
+      )
+      .filter(
+        block => block !== ""
+      );
+
+
+  // ==================================================
+  // 各FAQを解析
+  // ==================================================
+
+  blocks.forEach(
+    block => {
+
+      const lines =
+        block.split(/\r?\n/);
+
+
+      const faq = {
+
+        question: "",
+        answer: ""
+
+      };
+
+
+      lines.forEach(
+        line => {
+
+          const trimmed =
+            line.trim();
+
+
+          // 空行は無視
+          if (!trimmed) {
+
+            return;
+
+          }
+
+
+          // ==================================================
+          // コメント行は無視
+          // 「#」から始まる行
+          // ==================================================
+
+          if (
+            trimmed.startsWith("#")
+          ) {
+
+            return;
+
+          }
+
+
+          // ==================================================
+          // 項目を解析
+          // ==================================================
+
+          const match =
+            trimmed.match(
+              /^([^=]+)=(.*)$/
+            );
+
+
+          if (!match) {
+
+            return;
+
+          }
+
+
+          const key =
+            match[1].trim();
+
+
+          const value =
+            match[2].trim();
+
+
+          if (key === "question") {
+
+            faq.question =
+              value;
+
+          }
+
+          else if (key === "answer") {
+
+            faq.answer =
+              value;
+
+          }
+
+        }
+      );
+
+
+      // 質問と回答が両方あるものだけ追加
+      if (
+        faq.question &&
+        faq.answer
+      ) {
+
+        faqs.push(
+          faq
+        );
+
+      }
+
+    }
+  );
+
+
+  return faqs;
+
+}
+
+
+// ==================================================
+// CREATE FAQ HTML
+// ==================================================
+
+function createFAQHTML(
+  faq,
+  index
+) {
+
+  return `
+
+    <details class="faq-item">
+
+      <summary class="faq-question">
+
+        <span class="faq-q">
+          Q
+        </span>
+
+        <span class="faq-question-text">
+          ${escapeHTML(
+    faq.question
+  )}
+        </span>
+
+        <span class="faq-arrow">
+          ›
+        </span>
+
+      </summary>
+
+
+      <div class="faq-answer">
+
+        <span class="faq-a">
+          A
+        </span>
+
+        <p>
+          ${formatFAQAnswer(
+    faq.answer
+  )}
+        </p>
+
+      </div>
+
+    </details>
+
+  `;
+
+}
+
+
+// ==================================================
+// FAQ ANSWER
+// 改行をHTMLに反映
+// ==================================================
+
+function formatFAQAnswer(
+  value
+) {
+
+  return escapeHTML(
+    value
+  ).replace(
+    /\r?\n/g,
+    "<br>"
+  );
+
+}
+
+
+// ==================================================
+// FAQ START
+// ==================================================
+
+loadFAQ();
