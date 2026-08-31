@@ -30,6 +30,19 @@ title=市民バンドフェスティバル
 
 ---
 
+year=2026
+date=10/11(日)
+label=SPORTS RECREATION FESTIVAL
+title=広島市スポーツ・レクリエーションフェスティバル
+
+[DETAIL]
+会場=広島広域公園多目的広場
+開場=未定
+開演=未定
+入場料=無料
+
+---
+
 year=2027
 date=4/24(土)
 label=KIRARISM CONCERT
