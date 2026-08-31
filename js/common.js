@@ -1727,3 +1727,34 @@ function formatFAQAnswer(
 // ==================================================
 
 loadFAQ();
+
+// ==================================================
+// ANCHOR SCROLL
+// 他ページからTOPの各セクションへ移動した場合の位置調整
+// ==================================================
+
+window.addEventListener("load", () => {
+
+  if (!window.location.hash) {
+    return;
+  }
+
+  const target =
+    document.querySelector(
+      window.location.hash
+    );
+
+  if (!target) {
+    return;
+  }
+
+  setTimeout(() => {
+
+    target.scrollIntoView({
+      behavior: "auto",
+      block: "start"
+    });
+
+  }, 100);
+
+});
