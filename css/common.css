@@ -2510,3 +2510,285 @@ button {
   }
 
 }
+
+
+/* ==================================================
+   LINE STAMP
+================================================== */
+
+.line-stamp-section {
+  background: var(--gray);
+}
+
+
+/* ====================
+   INTRO
+==================== */
+
+.line-stamp-intro {
+  margin: -15px auto 40px;
+  text-align: center;
+}
+
+.line-stamp-intro p {
+  margin: 0;
+  color: var(--text-light);
+  font-size: 14px;
+}
+
+
+/* ====================
+   GRID
+==================== */
+
+.line-stamp-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 28px;
+
+  max-width: 900px;
+
+  margin: 0 auto;
+}
+
+
+/* ====================
+   CARD
+==================== */
+
+.line-stamp-card {
+  display: grid;
+
+  grid-template-columns: 145px minmax(0, 1fr);
+
+  min-height: 250px;
+
+  overflow: hidden;
+
+  background: var(--white);
+
+  border: 1px solid var(--border);
+
+  box-shadow:
+    0 10px 35px rgba(0, 0, 0, .05);
+}
+
+
+/* ====================
+   IMAGE
+==================== */
+
+.line-stamp-image {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  height: 100%;
+  padding-left: 10px;
+
+  overflow: hidden;
+}
+
+.line-stamp-image img {
+  display: block;
+
+  width: 100%;
+  height: auto;
+
+  max-height: 200px;
+
+  object-fit: contain;
+
+  transition:
+    transform .35s ease,
+    opacity .35s ease;
+}
+
+.line-stamp-card:hover
+.line-stamp-image img {
+  transform: scale(1.03);
+
+  opacity: .9;
+}
+
+
+/* ====================
+   CONTENT
+==================== */
+
+.line-stamp-content {
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  padding: 25px;
+}
+
+.line-stamp-content h3 {
+  margin: 0 0 12px;
+
+  color: var(--navy);
+
+  font-size: 18px;
+
+  line-height: 1.5;
+}
+
+.line-stamp-content p {
+  margin: 0 0 20px;
+
+  color: var(--text-light);
+
+  font-size: 13px;
+
+  line-height: 1.8;
+}
+
+
+/* ====================
+   BUTTON
+==================== */
+
+.line-stamp-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 15px;
+
+  width: 100%;
+
+  padding: 10px 15px;
+
+  border: 1px solid var(--navy);
+
+  border-radius: 4px;
+
+  color: var(--navy);
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  transition:
+    background .25s ease,
+    color .25s ease;
+}
+
+.line-stamp-button span {
+  font-size: 22px;
+
+  line-height: 1;
+}
+
+.line-stamp-button:hover {
+  background: var(--navy);
+
+  color: var(--white);
+}
+
+
+/* ====================
+   MOBILE
+==================== */
+
+.line-stamp-mobile-br {
+  display: none;
+}
+
+
+@media (max-width: 900px) {
+
+  .line-stamp-grid {
+    grid-template-columns: 1fr;
+
+    max-width: 650px;
+  }
+
+}
+
+
+@media (max-width: 700px) {
+
+  .line-stamp-intro {
+    margin: -10px auto 30px;
+  }
+
+  .line-stamp-intro p {
+    font-size: 13px;
+
+    line-height: 1.8;
+  }
+
+  .line-stamp-mobile-br {
+    display: block;
+  }
+
+  .line-stamp-grid {
+    gap: 20px;
+  }
+
+  .line-stamp-card {
+    grid-template-columns: 120px minmax(0, 1fr);
+
+    min-height: 220px;
+  }
+
+  .line-stamp-image img {
+    max-height: 170px;
+  }
+
+  .line-stamp-content {
+    padding: 20px;
+  }
+
+  .line-stamp-content h3 {
+    font-size: 17px;
+  }
+
+  .line-stamp-content p {
+    font-size: 12px;
+
+    line-height: 1.7;
+  }
+
+  .line-stamp-button {
+    padding: 9px 10px;
+
+    font-size: 12px;
+  }
+
+}
+
+
+@media (max-width: 400px) {
+
+  .line-stamp-card {
+    grid-template-columns: 105px minmax(0, 1fr);
+
+    min-height: 210px;
+  }
+
+  .line-stamp-image img {
+    max-height: 160px;
+  }
+
+  .line-stamp-content {
+    padding: 16px;
+  }
+
+  .line-stamp-content h3 {
+    font-size: 15px;
+  }
+
+  .line-stamp-content p {
+    font-size: 11px;
+  }
+
+}
