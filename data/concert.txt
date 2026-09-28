@@ -18,19 +18,6 @@
 [CONCERT]
 
 year=2026
-date=9/21(月)
-label=BAND FESTIVAL
-title=市民バンドフェスティバル
-
-[DETAIL]
-会場=広島文化学園HBGホール
-開場=12:00
-開演=12:30
-入場料=無料
-
----
-
-year=2026
 date=10/11(日)
 label=SPORTS RECREATION FESTIVAL
 title=広島市スポーツ・レクリエーションフェスティバル
@@ -38,6 +25,19 @@ title=広島市スポーツ・レクリエーションフェスティバル
 [DETAIL]
 会場=広島広域公園多目的広場
 出演時間=10:45
+入場料=無料
+
+---
+
+year=2026
+date=11/28(土)
+label=INTERACTION CONCERT
+title=ふれあいコンサート
+
+[DETAIL]
+会場=広島市立安佐中学校体育館
+開場=未定
+開演=未定
 入場料=無料
 
 ---
