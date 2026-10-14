@@ -18,18 +18,6 @@
 [CONCERT]
 
 year=2026
-date=10/11(日)
-label=SPORTS RECREATION FESTIVAL
-title=広島市スポーツ・レクリエーションフェスティバル
-
-[DETAIL]
-会場=広島広域公園多目的広場
-出演時間=10:45
-入場料=無料
-
----
-
-year=2026
 date=11/28(土)
 label=INTERACTION CONCERT
 title=ふれあいコンサート
